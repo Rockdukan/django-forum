@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Удалить тему{% endblock %}
+{% block forum_content %}
+<div class="create-form-container">
+  <h2>Удалить тему «{{ topic.title }}»?</h2>
+  <p>Сообщения останутся в базе, но тема исчезнет из списков (мягкое удаление).</p>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.reason.label_tag }}{{ form.reason }}
+    <p><button type="submit" class="submit-button">Удалить</button>
+    <a href="{{ topic.get_absolute_url }}" class="cancel-button">Отмена</a></p>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "account/base.html" %}
+{% load i18n allauth account %}
+
+{% block head_title %}{% trans "Signup" %}{% endblock %}
+
+{% block content_account %}
+<p class="auth-lead">Создайте аккаунт, чтобы участвовать в обсуждениях на форуме.</p>
+<form method="post" action="{% url 'account_signup' %}" class="auth-form">
+    {% csrf_token %}
+    {% for field in form %}
+    <div class="form-group">
+        <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+        {% if field.help_text %}<small class="form-help">{{ field.help_text }}</small>{% endif %}
+        {% if field.errors %}<span class="form-error">{{ field.errors.0 }}</span>{% endif %}
+    </div>
+    {% endfor %}
+    {% if redirect_field_value %}
+    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+    {% endif %}
+    <button type="submit" class="btn btn-primary btn-block">Зарегистрироваться</button>
+</form>
+<p class="auth-footer mt-3"><a href="{% url 'account_login' %}">Уже есть аккаунт? Войти</a></p>
+{% endblock %}

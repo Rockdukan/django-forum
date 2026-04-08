@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Редактирование сообщения{% endblock %}
+{% block forum_content %}
+<div class="create-form-container">
+  <h2>Редактировать сообщение</h2>
+  <p class="form-help">Тема: <a href="{{ topic.get_absolute_url }}">{{ topic.title }}</a></p>
+  <form method="post" enctype="multipart/form-data" class="reply-form">
+    {% csrf_token %}
+    {% if form.non_field_errors %}<div class="form-error">{{ form.non_field_errors }}</div>{% endif %}
+    <div class="form-group">{{ form.content.label_tag }}{{ form.content }}{{ form.content.errors }}</div>
+    <div class="form-group">{{ form.edit_reason.label_tag }}{{ form.edit_reason }}{{ form.edit_reason.errors }}</div>
+    <div class="form-group">
+      <label>Вложения (файлы)</label>
+      <input type="file" name="attachments" multiple class="auth-input">
+      <span class="form-help">До 5 файлов; изображения, PDF, zip, txt.</span>
+    </div>
+    <div class="form-group" style="display:none">{{ form.website.label_tag }}{{ form.website }}</div>
+    <button type="submit" class="submit-button">Сохранить</button>
+    <a href="{{ post.get_absolute_url }}" class="cancel-button">Отмена</a>
+  </form>
+</div>
+{% endblock %}

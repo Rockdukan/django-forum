@@ -1,0 +1,12 @@
+{% extends "admin/change_form.html" %}
+{% load i18n %}
+{% load admin_urls %}
+
+{% block breadcrumbs %}
+{% if not is_popup %}
+<div class="breadcrumbs">
+  <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+  &rsaquo; {{ opts.verbose_name|capfirst }}
+</div>
+{% endif %}
+{% endblock %}

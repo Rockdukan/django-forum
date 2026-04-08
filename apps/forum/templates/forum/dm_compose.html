@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Новое сообщение{% endblock %}
+{% block forum_content %}
+<div class="create-form-container">
+  <h2>Написать пользователю</h2>
+  <form method="post">
+    {% csrf_token %}
+    <div class="form-group">{{ form.to_username.label_tag }}{{ form.to_username }}{{ form.to_username.errors }}</div>
+    <div class="form-group">{{ form.message.label_tag }}{{ form.message }}{{ form.message.errors }}</div>
+    <button type="submit" class="submit-button">Отправить</button>
+    <a href="{% url 'forum:dm_inbox' %}" class="cancel-button">Отмена</a>
+  </form>
+</div>
+{% endblock %}

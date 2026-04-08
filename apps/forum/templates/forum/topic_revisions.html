@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}История правок темы{% endblock %}
+{% block forum_content %}
+<div class="topic-detail-container">
+  <h1>История правок: {{ topic.title }}</h1>
+  <p><a href="{{ topic.get_absolute_url }}">← К теме</a></p>
+  {% for r in revisions %}
+  <div class="post" style="margin-bottom:1rem;">
+    <p><strong>{{ r.created_at }}</strong> · {{ r.editor }}</p>
+    {% if r.edit_reason %}<p>Причина: {{ r.edit_reason }}</p>{% endif %}
+    <pre style="white-space:pre-wrap;font-size:0.9rem;">{{ r.old_title }} / {{ r.old_content|truncatechars:400 }}</pre>
+    <hr>
+    <pre style="white-space:pre-wrap;font-size:0.9rem;">{{ r.new_title }} / {{ r.new_content|truncatechars:400 }}</pre>
+  </div>
+  {% empty %}
+  <p>Нет сохранённых версий.</p>
+  {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,204 @@
+{% extends "base.html" %}
+{% load forum_tags %}
+
+{% block title %}Профиль {{ profile_user.username }} - Форум{% endblock %}
+
+{% block forum_content %}
+<div class="breadcrumb-container">
+    <ul class="breadcrumb-list">
+        <li class="breadcrumb-item">
+            <a href="{% url 'forum:index' %}" class="breadcrumb-link">Главная</a>
+            <span class="breadcrumb-divider"><i class="fas fa-angle-right"></i></span>
+        </li>
+        <li class="breadcrumb-item">
+            <span class="breadcrumb-current" aria-current="page">Профиль: {{ profile_user.username }}</span>
+        </li>
+    </ul>
+</div>
+
+<div class="user-profile-container">
+    {% if viewer_ignores_profile %}
+    <div class="forum-notice" style="padding:0.75rem 1rem;margin-bottom:1rem;border-radius:6px;background:rgba(180,120,0,0.2);">
+        Вы игнорируете этого пользователя: темы и сообщения скрыты из общих списков и поиска.
+    </div>
+    {% endif %}
+    <div class="user-profile-header">
+        <div class="user-avatar-large">
+            {% if profile_user.avatar %}
+                <img src="{{ profile_user.avatar.url }}" alt="{{ profile_user.username }}" class="avatar-img">
+            {% else %}
+                <div class="avatar-default">{{ profile_user.username|first }}</div>
+            {% endif %}
+        </div>
+
+        <div class="user-info-block">
+            <h1 class="user-profile-name">{{ profile_user.username }}</h1>
+            <div class="user-role {{ profile_user.role }}">{{ profile_user|get_user_role_display }}</div>
+
+            <div class="user-stats user-stats--compact">
+                <div class="stat-item">
+                    <span class="stat-value">{{ profile_user.posts.count }}</span>
+                    <span class="stat-label">сообщ.</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">{{ profile_user.topics.count }}</span>
+                    <span class="stat-label">тем</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">{{ profile_user.karma }}</span>
+                    <span class="stat-label">реп.</span>
+                </div>
+                <div class="stat-item stat-item--wide">
+                    <span class="stat-value stat-value--wrap">{{ profile_user.email }}</span>
+                    <span class="stat-label">email</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">{{ profile_user.date_joined|date:"d.m.Y" }}</span>
+                    <span class="stat-label">регистр.</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">
+                        {% if profile_user|online_status %}
+                            <span class="online-badge">Онлайн</span>
+                        {% else %}
+                            {{ profile_user.last_activity|friendly_date }}
+                        {% endif %}
+                    </span>
+                    <span class="stat-label">активн.</span>
+                </div>
+            </div>
+
+            {% if user.is_authenticated and user == profile_user %}
+                <div class="profile-actions">
+                    <a href="{% url 'forum:edit_profile' %}" class="edit-profile-btn">
+                        <i class="fas fa-user-edit"></i> Редактировать профиль
+                    </a>
+                    <a href="{% url 'forum:bookmarks_list' %}" class="edit-profile-btn">
+                        <i class="fas fa-bookmark"></i> Закладки
+                    </a>
+                    <a href="{% url 'forum:manage_ignored_users' %}" class="edit-profile-btn">
+                        <i class="fas fa-user-slash"></i> Игнор-лист
+                    </a>
+                    <a href="{% url 'account_change_password' %}" class="change-password-btn">
+                        <i class="fas fa-key"></i> Сменить пароль
+                    </a>
+                    <a href="{% url 'account_email' %}" class="manage-email-btn">
+                        <i class="fas fa-envelope"></i> Управление email
+                    </a>
+                </div>
+            {% elif user.is_authenticated %}
+                <div class="profile-actions profile-actions--dm">
+                    <a href="{% url 'forum:dm_compose_to' username=profile_user.username %}" class="topic-button profile-dm-cta">
+                        <i class="fas fa-envelope"></i> Написать в личные сообщения
+                    </a>
+                    <form method="post" action="{% url 'forum:toggle_ignore_user' username=profile_user.username %}" style="display:inline-block;margin-left:0.5rem;">
+                        {% csrf_token %}
+                        <button type="submit" class="cancel-button">
+                            {% if viewer_ignores_profile %}Снять игнор{% else %}Игнорировать{% endif %}
+                        </button>
+                    </form>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if user.is_authenticated and user == profile_user %}
+    <div class="profile-dm-block">
+        <h3 class="section-title">Личные сообщения</h3>
+        <p class="profile-dm-hint">Все диалоги в одном месте: и входящие, и исходящие. Откройте переписку, чтобы увидеть полную историю сообщений.</p>
+        <div class="profile-dm-actions">
+            <a href="{% url 'forum:dm_inbox' %}" class="topic-button"><i class="fas fa-inbox"></i> Все переписки</a>
+            <a href="{% url 'forum:dm_compose' %}" class="edit-profile-btn"><i class="fas fa-edit"></i> Новое сообщение</a>
+        </div>
+        {% if dm_preview %}
+        <ul class="dm-preview-list">
+            {% for row in dm_preview %}
+            <li class="dm-preview-item{% if row.unread %} dm-preview-item--unread{% endif %}">
+                <a href="{% url 'forum:dm_thread' thread_id=row.thread.id %}" class="dm-preview-link">
+                    <div class="dm-inbox-top">
+                        <div class="dm-preview-peer">
+                            <span class="dm-inbox-peer-name">
+                                {% if row.other_user %}{{ row.other_user.username }}{% else %}—{% endif %}
+                            </span>
+                            {% if row.unread %}<span class="dm-preview-badge">новое</span>{% endif %}
+                        </div>
+                        <time class="dm-inbox-time">{{ row.thread.updated_at|friendly_date }}</time>
+                    </div>
+                    <div class="dm-preview-snippet">
+                        {% if row.last_message %}
+                            {% if row.last_from_self %}<span class="dm-preview-dir">Вы:</span>{% else %}<span class="dm-preview-dir">Вам:</span>{% endif %}
+                            {{ row.last_message.body|truncatechars:72 }}
+                        {% else %}
+                            <em>Нет сообщений</em>
+                        {% endif %}
+                    </div>
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p class="profile-dm-empty">Переписок пока нет — можно <a href="{% url 'forum:dm_compose' %}">написать кому-нибудь</a> с главной или со страницы его профиля.</p>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    {% if profile_user.signature %}
+        <div class="profile-signature">
+            <h3 class="section-title">Подпись</h3>
+            <div class="signature-content">
+                {{ profile_user.signature|markdown|safe }}
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="profile-content profile-content--compact">
+        <div class="profile-section profile-section--compact">
+            <h3 class="section-title section-title--compact">Последние темы</h3>
+            <p class="profile-section-hint">Показаны не более 5 последних тем.</p>
+            {% if topics %}
+                <div class="user-topics-list user-activity-list">
+                    {% for topic in topics %}
+                        <article class="topic-item profile-activity-card">
+                            <div class="topic-details">
+                                <a href="{{ topic.get_absolute_url }}" class="profile-activity-title">{{ topic.title }}</a>
+                                <div class="profile-activity-sub">
+                                    <a href="{{ topic.category.get_absolute_url }}">{{ topic.category.name }}</a>
+                                    <span class="profile-activity-sep" aria-hidden="true">·</span>
+                                    <time class="topic-time">{{ topic.created_at|friendly_date }}</time>
+                                </div>
+                            </div>
+                            <div class="topic-stats profile-activity-stat" title="Число ответов в теме">
+                                <i class="fas fa-comment" aria-hidden="true"></i>{{ topic.get_reply_count }}
+                            </div>
+                        </article>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="no-content-message">Пользователь не создал ни одной темы.</div>
+            {% endif %}
+        </div>
+
+        <div class="profile-section profile-section--compact">
+            <h3 class="section-title section-title--compact">Последние сообщения</h3>
+            <p class="profile-section-hint">Показаны не более 5 последних сообщений.</p>
+            {% if posts %}
+                <div class="user-posts-list user-activity-list">
+                    {% for post in posts %}
+                        <article class="post-item profile-activity-card">
+                            <div class="post-details">
+                                <div class="post-meta profile-activity-topic-line">
+                                    В теме <a href="{{ post.topic.get_absolute_url }}">{{ post.topic.title }}</a>
+                                </div>
+                                <p class="post-content-preview profile-post-snippet">{{ post.content|truncatechars:120 }}</p>
+                                <time class="post-time">{{ post.created_at|friendly_date }}</time>
+                            </div>
+                        </article>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="no-content-message">Пользователь не оставил ни одного сообщения.</div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

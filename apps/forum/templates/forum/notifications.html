@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load forum_tags %}
+{% block title %}Уведомления{% endblock %}
+{% block forum_content %}
+<div class="topic-detail-container forum-list-page notifications-page">
+  <div class="forum-list-page__header">
+    <h1 class="forum-list-page__title">Уведомления</h1>
+    {% if items %}
+    <div class="forum-list-page__actions">
+      <form method="post" action="{% url 'forum:notifications_read_all' %}" class="notifications-read-all-form">
+        {% csrf_token %}
+        <button type="submit" class="topic-button">Отметить все прочитанными</button>
+      </form>
+    </div>
+    {% endif %}
+  </div>
+  {% if items %}
+  <div class="notifications-grid">
+    {% for n in items %}
+    <a
+      href="{% url 'forum:notification_read' notification_id=n.id %}"
+      class="notification-card{% if not n.read_at %} notification-card--unread{% endif %}"
+    >
+      <div class="notification-card__top">
+        {% if not n.read_at %}
+        <span class="notification-card__badge">Новое</span>
+        {% else %}
+        <span class="notification-card__badge notification-card__badge--read">Прочитано</span>
+        {% endif %}
+        <time class="notification-card__time" datetime="{{ n.created_at|date:'c' }}">{{ n.created_at|friendly_date }}</time>
+      </div>
+      <p class="notification-card__text">{{ n.message }}</p>
+    </a>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="forum-empty-state">Уведомлений пока нет.</div>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}История правок сообщения{% endblock %}
+{% block forum_content %}
+<div class="topic-detail-container">
+  <h1>История правок сообщения #{{ post.id }}</h1>
+  <p><a href="{{ post.get_absolute_url }}">← К сообщению</a></p>
+  {% for r in revisions %}
+  <div class="post" style="margin-bottom:1rem;">
+    <p><strong>{{ r.created_at }}</strong> · {{ r.editor }}</p>
+    {% if r.edit_reason %}<p>Причина: {{ r.edit_reason }}</p>{% endif %}
+    <pre style="white-space:pre-wrap;font-size:0.9rem;">{{ r.old_content }}</pre>
+    <hr>
+    <pre style="white-space:pre-wrap;font-size:0.9rem;">{{ r.new_content }}</pre>
+  </div>
+  {% empty %}
+  <p>Нет сохранённых версий.</p>
+  {% endfor %}
+</div>
+{% endblock %}

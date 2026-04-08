@@ -1,0 +1,22 @@
+/*
+ * Summernote в admin (Lucus/Django): iframe с width="100%" внутри flex-строки (метка + виджет).
+ * Без flex:1 колонка с .summernote-div схлопывается по содержимому — редактор выглядит «узким».
+ */
+.aligned .form-row .flex-container {
+  align-items: flex-start;
+}
+
+.aligned .form-row .flex-container > .summernote-div {
+  flex: 1 1 auto;
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.aligned .form-row .flex-container > .summernote-div iframe {
+  width: 100% !important;
+  max-width: 100%;
+  display: block;
+  box-sizing: border-box;
+}

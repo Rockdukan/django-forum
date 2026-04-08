@@ -1,0 +1,11 @@
+{% extends "admin/change_list.html" %}
+{% load i18n admin_urls %}
+
+{% block breadcrumbs %}
+  {% if not is_popup %}
+    <ul class="grp-horizontal-list">
+      <li><a href="{% url 'admin:index' %}">{% trans "Home" %}</a></li>
+      <li class="grp-last">{{ cl.opts.verbose_name_plural|capfirst }}</li>
+    </ul>
+  {% endif %}
+{% endblock %}

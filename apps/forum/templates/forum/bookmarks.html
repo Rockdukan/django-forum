@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load forum_tags %}
+
+{% block title %}Мои закладки — Форум{% endblock %}
+
+{% block forum_content %}
+<div class="breadcrumb-container">
+    <ul class="breadcrumb-list">
+        <li class="breadcrumb-item">
+            <a href="{% url 'forum:index' %}" class="breadcrumb-link">Главная</a>
+            <span class="breadcrumb-divider"><i class="fas fa-angle-right"></i></span>
+        </li>
+        <li class="breadcrumb-item">
+            <span class="breadcrumb-current">Закладки</span>
+        </li>
+    </ul>
+</div>
+
+<div class="topic-detail-container forum-list-page">
+    <h1 class="category-title">Мои закладки</h1>
+    <div class="topic-list">
+        {% for bm in page_obj %}
+        <div class="topic-item">
+            <div class="topic-main">
+                <a href="{{ bm.topic.get_absolute_url }}" class="topic-title-link">{{ bm.topic.title }}</a>
+                <div class="topic-meta">
+                    <span>{{ bm.topic.category.name }}</span>
+                    <span>{{ bm.created_at|friendly_date }}</span>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p>Закладок пока нет.</p>
+        {% endfor %}
+    </div>
+    {% if page_obj.paginator.num_pages > 1 %}
+    <div class="pagination-container">
+        <div class="pagination">
+            {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}" class="pagination-item"><i class="fas fa-angle-left"></i></a>
+            {% endif %}
+            <span class="pagination-item active">{{ page_obj.number }}</span>
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" class="pagination-item"><i class="fas fa-angle-right"></i></a>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

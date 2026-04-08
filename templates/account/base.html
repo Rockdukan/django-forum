@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Аккаунт{% endblock %}
+{% block forum_content %}
+<div class="auth-page-shell">
+  <div class="auth-in-site">
+    <div class="auth-card auth-card--in-site">
+      <a href="{% url 'forum:index' %}" class="auth-back">← На главную</a>
+      <h1 class="title">{% block head_title %}Аккаунт{% endblock %}</h1>
+      {% if messages %}
+      <ul class="auth-messages">
+        {% for message in messages %}
+        <li class="alert alert-{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+      {% block content_account %}{% endblock %}
+      {% block extra_content %}{% endblock %}
+    </div>
+  </div>
+</div>
+{% endblock %}

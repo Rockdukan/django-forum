@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load forum_tags %}
+{% block title %}Тег «{{ tag.name }}» — Форум{% endblock %}
+{% block forum_content %}
+<div class="breadcrumb-container">
+    <ul class="breadcrumb-list">
+        <li class="breadcrumb-item">
+            <a href="{% url 'forum:index' %}" class="breadcrumb-link">Главная</a>
+            <span class="breadcrumb-divider" aria-hidden="true"><i class="fas fa-angle-right"></i></span>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="{% url 'forum:tag_cloud' %}" class="breadcrumb-link">Теги</a>
+            <span class="breadcrumb-divider" aria-hidden="true"><i class="fas fa-angle-right"></i></span>
+        </li>
+        <li class="breadcrumb-item">
+            <span class="breadcrumb-current">{{ tag.name }}</span>
+        </li>
+    </ul>
+</div>
+<h1 class="container-title"><i class="fas fa-tag"></i> Темы с тегом «{{ tag.name }}»</h1>
+{% include "forum/includes/home_topic_table.html" with topics=page_obj empty_message="Нет тем с этим тегом." %}
+{% if page_obj.has_other_pages %}
+<div class="pagination tag-topics-pagination">
+    {% if page_obj.has_previous %}
+    <a href="?page={{ page_obj.previous_page_number }}" class="pagination-link">← Назад</a>
+    {% endif %}
+    <span class="pagination-meta">Стр. {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
+    {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}" class="pagination-link">Вперёд →</a>
+    {% endif %}
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Скрыть сообщение{% endblock %}
+{% block forum_content %}
+<div class="create-form-container">
+  <h2>Скрыть сообщение #{{ post.id }}</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.reason.label_tag }}{{ form.reason }}
+    <p><button type="submit" class="submit-button">Скрыть</button>
+    <a href="{{ post.get_absolute_url }}" class="cancel-button">Отмена</a></p>
+  </form>
+</div>
+{% endblock %}

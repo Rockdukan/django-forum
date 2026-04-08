@@ -1,0 +1,29 @@
+{% extends "admin/base.html" %}
+{% load i18n static %}
+
+{% block title %}{% block pagetitle %}Rosetta{% endblock %} | {{ site_title|default:_('Админка') }}{% endblock %}
+
+{% block bodyclass %}{{ block.super }} rosetta-page{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'admin/rosetta/css/rosetta.css' %}" type="text/css"/>
+{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+  <a href="{% url 'admin:index' %}">{% trans "Home" %}</a>
+  &rsaquo; <a href="{% url 'rosetta-file-list' po_filter='project' %}">{% trans "Translations" %}</a>
+  {% block breadcumbs %}{% endblock %}
+</div>
+{% endblock %}
+
+{% block content_title %}{% endblock %}
+
+{% block content %}
+<div id="content-main" class="lucus-content">
+  <div class="grp-module grp-changelist-module lucus-rosetta">
+{% block main %}{% endblock %}
+  </div>
+</div>
+{% endblock %}

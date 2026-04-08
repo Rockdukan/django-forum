@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% load forum_tags %}
+
+{% block title %}Поиск: {{ query }} - Форум{% endblock %}
+
+{% block forum_content %}
+<div class="breadcrumb-container">
+    <ul class="breadcrumb-list">
+        <li class="breadcrumb-item">
+            <a href="{% url 'forum:index' %}" class="breadcrumb-link">Главная</a>
+            <span class="breadcrumb-divider"><i class="fas fa-angle-right"></i></span>
+        </li>
+        <li class="breadcrumb-item">
+            <span class="breadcrumb-current">Результаты поиска: {{ query }}</span>
+        </li>
+    </ul>
+</div>
+
+<div class="search-results-container">
+    <div class="search-header">
+        <h1 class="search-title">Результаты поиска</h1>
+        <div class="search-form">
+            <form method="get" action="{% url 'forum:search' %}">
+                <div class="search-input-container">
+                    <input type="text" name="q" value="{{ query }}" class="search-input" placeholder="Поиск...">
+                    <button type="submit" class="search-button">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    {% if query %}
+        <div class="search-summary">
+            Найдено результатов:
+            {{ results.topics|length }} тем,
+            {{ results.posts|length }} сообщений
+        </div>
+
+        {% if results.topics or results.posts %}
+            {% if results.topics %}
+                <div class="search-section">
+                    <h3 class="section-title">Темы</h3>
+                    <div class="topic-list">
+                        {% for topic in results.topics %}
+                            <div class="topic-item">
+                                <div class="topic-main">
+                                    <div class="topic-icon {% if topic.is_sticky %}sticky{% elif topic.is_closed %}closed{% endif %}">
+                                        {% if topic.is_sticky %}
+                                            <i class="fas fa-thumbtack"></i>
+                                        {% elif topic.is_closed %}
+                                            <i class="fas fa-lock"></i>
+                                        {% else %}
+                                            <i class="fas fa-comment-alt"></i>
+                                        {% endif %}
+                                    </div>
+                                    <div class="topic-info">
+                                        <a href="{{ topic.get_absolute_url }}" class="topic-title-link">{{ topic.title|highlight_search_term:query }}</a>
+                                        <div class="topic-meta">
+                                            Автор: <a href="{% url 'forum:user_profile' username=topic.author.username %}">{{ topic.author.username }}</a>,
+                                            {{ topic.created_at|friendly_date }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="topic-stats">
+                                    <div class="stats-number">{{ topic.get_reply_count }}</div>
+                                    <div>ответов</div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if results.posts %}
+                <div class="search-section">
+                    <h3 class="section-title">Сообщения</h3>
+                    <div class="post-list">
+                        {% for post in results.posts %}
+                            <div class="post search-post">
+                                <div class="post-header">
+                                    <div class="user-info">
+                                        <a href="{% url 'forum:user_profile' username=post.author.username %}" class="user-name">
+                                            {{ post.author.username }}
+                                        </a>
+                                        <span class="post-time">{{ post.created_at|friendly_date }}</span>
+                                    </div>
+                                    <div class="post-topic">
+                                        В теме: <a href="{{ post.topic.get_absolute_url }}">{{ post.topic.title }}</a>
+                                    </div>
+                                </div>
+                                <div class="post-content">
+                                    <p>{{ post.content|truncatewords:50|highlight_search_term:query }}</p>
+                                    <a href="{{ post.get_absolute_url }}" class="view-post-link">Перейти к сообщению &raquo;</a>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+        {% else %}
+            <div class="no-results">
+                <p>По вашему запросу <strong>"{{ query }}"</strong> ничего не найдено.</p>
+                <p>Попробуйте изменить поисковый запрос или просмотреть список всех тем.</p>
+            </div>
+        {% endif %}
+    {% else %}
+        <div class="search-instructions">
+            <h3>Советы по поиску:</h3>
+            <ul>
+                <li>Используйте более общие термины для поиска</li>
+                <li>Проверьте правильность написания</li>
+                <li>Попробуйте использовать синонимы</li>
+                <li>Для точного поиска используйте конкретные ключевые слова</li>
+            </ul>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

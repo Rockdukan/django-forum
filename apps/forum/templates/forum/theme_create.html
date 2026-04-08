@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% load forum_tags %}
+
+{% block title %}Создание новой темы - Форум{% endblock %}
+
+{% block forum_content %}
+<div class="breadcrumb-container">
+    <ul class="breadcrumb-list">
+        <li class="breadcrumb-item">
+            <a href="{% url 'forum:index' %}" class="breadcrumb-link">Главная</a>
+            <span class="breadcrumb-divider"><i class="fas fa-angle-right"></i></span>
+        </li>
+        {% for c in category.get_ancestors %}
+        <li class="breadcrumb-item">
+            <a href="{% url 'forum:category_detail' slug=c.slug %}" class="breadcrumb-link">{{ c.name }}</a>
+            <span class="breadcrumb-divider"><i class="fas fa-angle-right"></i></span>
+        </li>
+        {% endfor %}
+        <li class="breadcrumb-item">
+            <span class="breadcrumb-current">Создание новой темы</span>
+        </li>
+    </ul>
+</div>
+
+<div class="create-form-container">
+    <div class="forum-rules">
+        <h3 class="rules-title"><i class="fas fa-info-circle"></i> Правила создания тем</h3>
+        <ul class="rules-list">
+            <li>Информативные заголовки; перед созданием воспользуйтесь поиском.</li>
+            <li>Код форматируйте через панель инструментов. Картинки: синтаксис Markdown <code>![описание](URL)</code> или загрузите файлы в ответах.</li>
+            <li><code>@ник</code> уведомляет пользователя (если логин существует).</li>
+        </ul>
+    </div>
+
+    <div class="create-topic-container">
+        <div class="create-topic-header">
+            <h2 class="create-topic-title">Создание новой темы</h2>
+        </div>
+        <div class="create-topic-content">
+            <form method="post" action="" class="create-topic-form">
+                {% csrf_token %}
+                {% if form.non_field_errors %}
+                    <div class="form-error">{{ form.non_field_errors }}</div>
+                {% endif %}
+
+                <div class="form-group">
+                    <label for="{{ form.forum.id_for_label }}" class="form-label">Раздел форума</label>
+                    {{ form.forum }}
+                    {{ form.forum.errors }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.title.id_for_label }}" class="form-label">Заголовок темы</label>
+                    {{ form.title }}
+                    {{ form.title.errors }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.tags.id_for_label }}" class="form-label">Теги</label>
+                    {{ form.tags }}
+                    {{ form.tags.errors }}
+                    {% if form.tags.help_text %}<div class="form-help">{{ form.tags.help_text }}</div>{% endif %}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.poll_question.id_for_label }}" class="form-label">{{ form.poll_question.label }}</label>
+                    {{ form.poll_question }}
+                    {{ form.poll_question.errors }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.poll_options.id_for_label }}" class="form-label">{{ form.poll_options.label }}</label>
+                    {{ form.poll_options }}
+                    {{ form.poll_options.errors }}
+                    {% if form.poll_options.help_text %}<div class="form-help">{{ form.poll_options.help_text }}</div>{% endif %}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.content.id_for_label }}" class="form-label">Содержание</label>
+                    <div class="editor-toolbar">
+                        <button type="button" class="editor-button" title="Жирный" onclick="insertTag('**', '**')"><i class="fas fa-bold"></i></button>
+                        <button type="button" class="editor-button" title="Курсив" onclick="insertTag('*', '*')"><i class="fas fa-italic"></i></button>
+                        <button type="button" class="editor-button" title="Изображение (URL)" onclick="insertTag('![alt](', ')')"><i class="fas fa-image"></i></button>
+                        <button type="button" class="editor-button" title="Код" onclick="insertTag('\n```\n', '\n```')"><i class="fas fa-code"></i></button>
+                    </div>
+                    {{ form.content }}
+                    {{ form.content.errors }}
+                </div>
+                {% if form.captcha %}
+                <div class="form-group">
+                    {{ form.captcha.label_tag }}{{ form.captcha }}{{ form.captcha.errors }}
+                </div>
+                {% endif %}
+                <div class="form-group hp-field" aria-hidden="true">{{ form.website.label_tag }}{{ form.website }}</div>
+
+                <div class="form-actions">
+                    <button type="submit" class="submit-button"><i class="fas fa-paper-plane"></i> Создать тему</button>
+                    <a href="{% url 'forum:category_detail' slug=category.slug %}" class="cancel-button"><i class="fas fa-times"></i> Отмена</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function insertTag(openTag, closeTag) {
+        const textarea = document.getElementById('{{ form.content.id_for_label }}');
+        const start = textarea.selectionStart;
+        const end = textarea.selectionEnd;
+        const selectedText = textarea.value.substring(start, end);
+        const newText = openTag + selectedText + closeTag;
+        textarea.value = textarea.value.substring(0, start) + newText + textarea.value.substring(end);
+        const newCursorPos = start + newText.length;
+        textarea.focus();
+        textarea.setSelectionRange(newCursorPos, newCursorPos);
+    }
+</script>
+{% endblock %}

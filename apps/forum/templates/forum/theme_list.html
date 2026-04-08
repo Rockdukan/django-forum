@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+{% load forum_tags %}
+
+{% block title %}{{ category.name }} - Форум{% endblock %}
+
+{% block forum_content %}
+<div class="breadcrumb-container">
+    <ul class="breadcrumb-list">
+        <li class="breadcrumb-item">
+            <a href="{% url 'forum:index' %}" class="breadcrumb-link">Главная</a>
+            <span class="breadcrumb-divider"><i class="fas fa-angle-right"></i></span>
+        </li>
+        {% for c in category.get_ancestors %}
+        <li class="breadcrumb-item">
+            {% if not forloop.last %}
+            <a href="{% url 'forum:category_detail' slug=c.slug %}" class="breadcrumb-link">{{ c.name }}</a>
+            <span class="breadcrumb-divider"><i class="fas fa-angle-right"></i></span>
+            {% else %}
+            <span class="breadcrumb-current" aria-current="page">{{ c.name }}</span>
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+
+<div class="category-detail-container">
+    <div class="category-header">
+        <div class="category-info">
+            <h1 class="category-title">{{ category.name }}</h1>
+            {% if category.description %}
+                <div class="category-description">{{ category.description }}</div>
+            {% endif %}
+        </div>
+
+        <div class="category-actions">
+            {% if user.is_authenticated %}
+                <a href="{% url 'forum:create_topic' category_slug=category.slug %}" class="btn btn-create">
+                    <i class="fas fa-plus-circle"></i> Новая тема
+                </a>
+            {% endif %}
+            <nav class="home-toolbar category-actions__feeds" aria-label="RSS и Atom раздела">
+                <a href="/feeds/category/{{ category.slug }}/" class="home-toolbar__link home-toolbar__link--rss" title="RSS лента раздела"><i class="fas fa-rss" aria-hidden="true"></i> RSS</a>
+                <span class="home-toolbar__sep" aria-hidden="true">·</span>
+                <a href="/feeds/category/{{ category.slug }}.atom/" class="home-toolbar__link home-toolbar__link--atom" title="Atom лента раздела"><i class="fas fa-broadcast-tower" aria-hidden="true"></i> Atom</a>
+            </nav>
+
+            <form method="get" action="{% url 'forum:category_detail' slug=category.slug %}" class="filter-form">
+                <select name="filter" class="filter-dropdown" onchange="this.form.submit()">
+                    <option value="all" {% if filter == 'all' or not filter %}selected{% endif %}>Все темы</option>
+                    <option value="new" {% if filter == 'new' %}selected{% endif %}>Новые темы</option>
+                    <option value="popular" {% if filter == 'popular' %}selected{% endif %}>Популярные темы</option>
+                    <option value="unanswered" {% if filter == 'unanswered' %}selected{% endif %}>Без ответа</option>
+                </select>
+            </form>
+        </div>
+    </div>
+
+    {% if subcategories %}
+    <div class="subcategories-block" style="margin-bottom:1.25rem;">
+        <h3 class="container-title" style="font-size:1.1rem;">Подразделы</h3>
+        <div class="home-sections-list">
+            {% for sub in subcategories %}
+            <a href="{{ sub.get_absolute_url }}" class="home-section-item">
+                <h4 class="home-section-title">{{ sub.name }}</h4>
+                <div class="home-section-stats">
+                    <span class="stat-item"><i class="fas fa-comment-alt"></i> Тем: {{ sub.get_topic_count }}</span>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="topic-list">
+        <div class="topic-list-header">
+            <div class="header-topic">Тема / раздел</div>
+            <div class="header-author">Автор</div>
+            <div class="header-stats">Ответы</div>
+            <div class="header-last-post">Последнее сообщение</div>
+        </div>
+
+        {% for topic in page_obj %}
+            <div class="topic-item">
+                <div class="topic-main">
+                    <div class="topic-icon {% if topic.is_sticky %}sticky{% elif topic.is_closed %}closed{% endif %}">
+                        {% if topic.is_sticky %}
+                            <i class="fas fa-thumbtack"></i>
+                        {% elif topic.is_closed %}
+                            <i class="fas fa-lock"></i>
+                        {% else %}
+                            <i class="fas fa-comment-alt"></i>
+                        {% endif %}
+                    </div>
+
+                    <div class="topic-info topic-info-row">
+                        <a href="{% url 'forum:topic_detail' category_slug=topic.category.slug topic_slug=topic.slug %}" class="topic-title-link">{{ topic.title }}</a>
+                        <div class="topic-meta">
+                            <span class="topic-date">{{ topic.created_at|friendly_date }}</span>
+                            <span class="topic-views"><i class="fas fa-eye"></i> {{ topic.views }}</span>
+                            <a href="{{ topic.category.get_absolute_url }}" class="tag" style="margin-left:0.35rem;">{{ topic.category.name }}</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="topic-author-info">
+                    <a href="{% url 'forum:user_profile' username=topic.author.username %}" class="author-link">
+                        {{ topic.author.username }}
+                    </a>
+                    <div class="author-karma-line" style="font-size:0.85rem;opacity:0.9;" title="Репутация">
+                        <i class="fas fa-star"></i> {{ topic.author.karma }}
+                    </div>
+                </div>
+
+                <div class="topic-stats">
+                    <div class="stats-number">{{ topic.get_reply_count }}</div>
+                </div>
+
+                <div class="topic-last-post">
+                    {% with last_post=topic.get_last_post %}
+                        {% if last_post %}
+                            <div class="last-post-info">
+                                <a href="{% url 'forum:user_profile' username=last_post.author.username %}" class="last-author">
+                                    {{ last_post.author.username }}
+                                </a>
+                                <span style="font-size:0.8rem;opacity:0.85;">★{{ last_post.author.karma }}</span>
+                                <div class="last-date">
+                                    {{ last_post.created_at|friendly_date }}
+                                </div>
+                                <a href="{{ last_post.get_absolute_url }}" class="last-link">
+                                    <i class="fas fa-angle-double-right"></i>
+                                </a>
+                            </div>
+                        {% else %}
+                            <div class="no-replies">Нет ответов</div>
+                        {% endif %}
+                    {% endwith %}
+                </div>
+            </div>
+        {% empty %}
+            <div class="empty-topic-list">
+                <div class="empty-block">
+                    <i class="fas fa-comment-slash empty-icon"></i>
+                    <p>В этой категории пока нет тем.</p>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'forum:create_topic' category_slug=category.slug %}" class="btn btn-create">
+                            <i class="fas fa-plus-circle"></i> Создать первую тему
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    {% if page_obj.paginator.num_pages > 1 %}
+        <div class="pagination-container">
+            <div class="pagination">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1{% if filter %}&filter={{ filter }}{% endif %}" class="pagination-item"><i class="fas fa-angle-double-left"></i></a>
+                    <a href="?page={{ page_obj.previous_page_number }}{% if filter %}&filter={{ filter }}{% endif %}" class="pagination-item"><i class="fas fa-angle-left"></i></a>
+                {% endif %}
+
+                {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                        <a href="#" class="pagination-item active">{{ num }}</a>
+                    {% elif num > page_obj.number|add:"-3" and num < page_obj.number|add:"3" %}
+                        <a href="?page={{ num }}{% if filter %}&filter={{ filter }}{% endif %}" class="pagination-item">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}{% if filter %}&filter={{ filter }}{% endif %}" class="pagination-item"><i class="fas fa-angle-right"></i></a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}{% if filter %}&filter={{ filter }}{% endif %}" class="pagination-item"><i class="fas fa-angle-double-right"></i></a>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

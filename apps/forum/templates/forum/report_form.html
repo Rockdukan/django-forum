@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Жалоба{% endblock %}
+{% block forum_content %}
+<div class="report-form-page">
+  <div class="report-form-card">
+    <h2 class="report-form-title">Пожаловаться</h2>
+    <p class="report-form-intro">
+      {% if post %}
+        Сообщение в теме «{{ topic.title }}»
+      {% else %}
+        Тема «{{ topic.title }}»
+      {% endif %}
+    </p>
+    <form method="post" class="report-form">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="{{ form.reason.id_for_label }}" class="form-label">{{ form.reason.label }}</label>
+        {{ form.reason }}
+        {% if form.reason.errors %}
+          <div class="form-error" role="alert">{{ form.reason.errors }}</div>
+        {% endif %}
+      </div>
+      <div class="report-form-actions">
+        <button type="submit" class="submit-button"><i class="fas fa-paper-plane"></i> Отправить</button>
+        {% if post %}
+          <a href="{{ post.get_absolute_url }}" class="cancel-button">Отмена</a>
+        {% else %}
+          <a href="{{ topic.get_absolute_url }}" class="cancel-button">Отмена</a>
+        {% endif %}
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

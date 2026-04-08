@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load forum_tags %}
+{% block title %}Сообщения{% endblock %}
+{% block forum_content %}
+<!--------------------------- DM inbox (page wrap) --------------------------->
+<div class="topic-detail-container forum-list-page dm-inbox-page">
+<!----------------------------- Inbox header ------------------------------>
+  <div class="forum-list-page__header">
+    <h1 class="forum-list-page__title">Личные сообщения</h1>
+    <div class="forum-list-page__actions">
+      <a href="{% url 'forum:dm_compose' %}" class="topic-button"><i class="fas fa-edit"></i> Написать</a>
+    </div>
+  </div>
+<!--------------------------- END Inbox header ----------------------------->
+  <p class="dm-inbox-hint">Здесь все ваши диалоги: и то, что вам написали (входящие), и то, что вы отправили (исходящие) — в каждой переписке видна полная история.</p>
+<!----------------------------- Thread list -------------------------------->
+  {% if inbox_rows %}
+  <ul class="dm-inbox-list">
+    {% for row in inbox_rows %}
+    <li class="dm-inbox-item{% if row.unread %} dm-inbox-item--unread{% endif %}">
+      <a href="{% url 'forum:dm_thread' thread_id=row.thread.id %}" class="dm-inbox-link">
+        <div class="dm-inbox-top">
+          <div class="dm-inbox-peer">
+            <span class="dm-inbox-peer-name">
+              {% if row.other_user %}
+                {{ row.other_user.username }}
+              {% else %}
+                —
+              {% endif %}
+            </span>
+            {% if row.unread %}<span class="dm-inbox-badge">Новое</span>{% endif %}
+          </div>
+          <time class="dm-inbox-time">{{ row.thread.updated_at|friendly_date }}</time>
+        </div>
+        <div class="dm-inbox-snippet">
+          {% if row.last_message %}
+            {% if row.last_from_self %}
+              <span class="dm-inbox-dir">Вы:</span>
+            {% else %}
+              <span class="dm-inbox-dir">Вам:</span>
+            {% endif %}
+            {{ row.last_message.body|truncatechars:120 }}
+          {% else %}
+            <em class="dm-inbox-empty">Нет сообщений</em>
+          {% endif %}
+        </div>
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <div class="forum-empty-state">Пока нет переписок. Нажмите «Написать», чтобы отправить первое сообщение.</div>
+  {% endif %}
+<!--------------------------- END Thread list ------------------------------->
+</div>
+<!------------------------- END DM inbox (page wrap) ------------------------>
+{% endblock %}

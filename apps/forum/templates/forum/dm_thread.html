@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load forum_tags %}
+{% block title %}Переписка{% endblock %}
+{% block forum_content %}
+<div class="topic-detail-container dm-thread-page">
+  <div class="dm-thread-toolbar">
+    <a href="{% url 'forum:dm_inbox' %}" class="dm-back-link"><i class="fas fa-arrow-left" aria-hidden="true"></i> Все сообщения</a>
+  </div>
+  <div class="dm-messages">
+    {% for m in messages %}
+    <article class="dm-message">
+      <header class="dm-message-header">
+        <span class="dm-message-author">{{ m.sender.username }}</span>
+        <time class="dm-message-time" datetime="{{ m.created_at|date:'c' }}">{{ m.created_at|friendly_date }}</time>
+      </header>
+      <div class="dm-message-body">{{ m.body|linebreaksbr }}</div>
+    </article>
+    {% endfor %}
+  </div>
+  <form method="post" class="reply-form dm-thread-compose">
+    {% csrf_token %}
+    <textarea name="body" class="reply-textarea" rows="4" placeholder="Ваш ответ" required></textarea>
+    <button type="submit" class="submit-button">Отправить</button>
+  </form>
+</div>
+{% endblock %}

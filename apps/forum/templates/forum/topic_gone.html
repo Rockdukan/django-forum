@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block title %}Тема недоступна{% endblock %}
+{% block forum_content %}
+<div class="topic-detail-container">
+  <p>Тема удалена или недоступна.</p>
+  <p><a href="{% url 'forum:category_detail' slug=category.slug %}">← В раздел {{ category.name }}</a></p>
+</div>
+{% endblock %}

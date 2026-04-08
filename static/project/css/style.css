@@ -1,0 +1,4642 @@
+/* Основные стили в аниме-стиле с прозрачными элементами */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+/* Общие стили и сброс */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  color: #fff;
+  background: url('../img/background.jpg') repeat;
+  min-height: 100vh;
+}
+
+.main-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Хедер форума */
+.forum-header {
+  background-color: rgba(20, 20, 40, 0.8);
+  padding: 0.3rem 0;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+/* Мобильный хедер */
+.mobile-header {
+  display: none;
+}
+
+.mobile-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.3rem 0;
+}
+
+.mobile-search-row {
+  padding: 0.3rem 0;
+}
+
+.mobile-auth .auth-buttons {
+  gap: 5px;
+}
+
+.mobile-auth .auth-button {
+  padding: 0.2rem 0.4rem;
+  font-size: 0.7rem;
+}
+
+.forum-logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(81, 159, 255, 0.8);
+}
+
+/* Поиск */
+.search-container {
+  position: relative;
+  width: 100%;
+  max-width: min(380px, 100%);
+  min-width: 200px;
+  flex: 1 1 220px;
+  margin-right: 0;
+}
+
+.header-search-form {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 0.35rem;
+}
+
+.search-input {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  padding: 0.45rem 0.85rem;
+  padding-right: 0.5rem;
+  border-radius: 50px;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.search-input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.search-input:focus {
+  outline: none;
+  background-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 15px rgba(81, 159, 255, 0.4);
+}
+
+.search-button {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(81, 159, 255, 0.45);
+  color: #fff;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.search-button:hover {
+  background: rgba(81, 159, 255, 0.75);
+}
+
+.search-button:active {
+  transform: scale(0.96);
+}
+
+.search-button:focus-visible {
+  outline: 2px solid #51a9ff;
+  outline-offset: 2px;
+}
+
+/* Аутентификация */
+.auth-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Поиск + вход в одной колонке: явный зазор (кнопки не наезжают на поле) */
+.desktop-header .header-search-auth-cluster {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1.25rem;
+  flex-wrap: nowrap;
+  width: 100%;
+}
+
+.desktop-header .header-search-auth-cluster .search-container {
+  flex: 1 1 240px;
+  max-width: min(400px, 42vw);
+  margin-right: 0;
+}
+
+.desktop-header .header-search-auth-cluster .auth-container {
+  flex: 0 0 auto;
+  margin-left: 0;
+}
+
+.auth-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.auth-button {
+  padding: 0.3rem 0.8rem;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.3s ease;
+  color: #fff;
+}
+
+.auth-button.login {
+  background-color: rgba(81, 159, 255, 0.3);
+  border: 1px solid rgba(81, 159, 255, 0.5);
+}
+
+.auth-button.register {
+  background-color: rgba(255, 64, 129, 0.3);
+  border: 1px solid rgba(255, 64, 129, 0.5);
+}
+
+.auth-button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+}
+
+.user-nav {
+  display: flex;
+  gap: 15px;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #fff;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0.5rem 0;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.nav-link:hover {
+  color: #51A9FF;
+}
+
+.nav-link:hover::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(81, 169, 255, 0), rgba(81, 169, 255, 1), rgba(81, 169, 255, 0));
+}
+
+/* Навигация форума */
+.nav-menu {
+  display: flex;
+  list-style: none;
+  gap: 12px;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-menu .nav-link {
+  padding: 0.2rem 0.6rem;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  font-size: 0.85rem;
+}
+
+.nav-menu .nav-link:hover,
+.nav-menu .nav-link.active {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Мобильное меню */
+.mobile-menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.mobile-menu-container {
+  position: fixed;
+  top: 0;
+  left: -300px;
+  width: 280px;
+  height: 100%;
+  background-color: rgba(26, 26, 46, 0.95);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  transition: left 0.3s ease;
+}
+
+.mobile-menu-container.active {
+  left: 0;
+}
+
+.mobile-menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mobile-menu-header h3 {
+  margin: 0;
+  color: #fff;
+}
+
+.mobile-menu-close {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.mobile-menu {
+  list-style: none;
+  padding: 1rem 0;
+}
+
+.mobile-menu .nav-link {
+  display: block;
+  padding: 0.8rem 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.mobile-menu-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.mobile-menu-backdrop.active {
+  display: block;
+  opacity: 1;
+}
+
+/* Хлебные крошки */
+.breadcrumb-container {
+  background-color: rgba(28, 28, 52, 0.75);
+  border-radius: 10px;
+  padding: 0.65rem 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+}
+
+.breadcrumb-list {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.breadcrumb-item {
+  display: flex;
+  align-items: center;
+}
+
+.breadcrumb-link {
+  color: rgba(255, 255, 255, 0.92);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.breadcrumb-link:hover {
+  color: #9fd2ff;
+}
+
+.breadcrumb-divider {
+  margin: 0 0.5rem;
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 0.85rem;
+}
+
+.breadcrumb-current {
+  display: inline-block;
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  padding: 0.22rem 0.55rem;
+  border-radius: 6px;
+  background: rgba(81, 169, 255, 0.28);
+  border: 1px solid rgba(129, 200, 255, 0.45);
+  box-shadow: 0 0 12px rgba(81, 169, 255, 0.18);
+}
+
+/* Заголовки категорий и контейнеры - исправлено для полной ширины */
+.category-container,
+.topic-list,
+.create-form-container,
+.search-results-container,
+.user-profile-container,
+.edit-profile-container,
+.topic-detail-container {
+  width: 100%;
+  margin: 0 auto 1.5rem auto;
+  background-color: rgba(50, 50, 80, 0.5);
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1rem;
+  position: relative;
+}
+
+/* Список тем внутри блока главной: без второй «коробки» */
+.home-block .topic-list.topic-list--home {
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
+  border-radius: 0;
+  box-shadow: none;
+  border: none;
+}
+
+.topic-list {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+}
+
+/* Контейнер разделов форума (улучшено) */
+.razdeliy-forum-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto 1.5rem auto;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  padding: 0; /* Убираем внутренние отступы */
+}
+
+.container-title {
+  font-size: 1.2rem;
+  color: #fff;
+  margin-bottom: 0.8rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.container-title i {
+  color: #51A9FF;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.6rem 1.5rem;
+  border-radius: 50px;
+  border: none;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  color: #fff;
+}
+
+.btn-create {
+  background-color: rgba(255, 64, 129, 0.6);
+  border: 1px solid rgba(255, 64, 129, 0.8);
+}
+
+.btn-create:hover {
+  background-color: rgba(255, 64, 129, 0.8);
+  box-shadow: 0 0 15px rgba(255, 64, 129, 0.5);
+}
+
+/* Для блока списка разделов форума */
+.forum-sections {
+  width: 100%;
+}
+
+/* Карточки категорий */
+.category-card {
+  width: 100%;
+  background-color: rgba(40, 40, 70, 0.5);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 1rem;
+}
+
+.category-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+.category-header {
+  padding: 1rem;
+  background-color: rgba(30, 30, 60, 0.5);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+}
+
+.category-title {
+  margin: 0;
+  font-size: 1.3rem;
+  color: #fff;
+}
+
+.category-title a {
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.category-title a:hover {
+  color: #51A9FF;
+}
+
+.category-body {
+  padding: 1rem;
+}
+
+.category-description {
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 1rem;
+  min-height: 48px;
+}
+
+.category-stats {
+  display: flex;
+  gap: 15px;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.9rem;
+}
+
+/* Карточки тем */
+.topic-card {
+  background-color: rgba(40, 40, 70, 0.5);
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 1rem;
+}
+
+.topic-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+.topic-category {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.8rem;
+  margin-bottom: 0.3rem;
+  background-color: rgba(81, 169, 255, 0.3);
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+}
+
+.topic-title {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  line-height: 1.3;
+}
+
+.topic-title a {
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.topic-title a:hover {
+  color: #51A9FF;
+}
+
+.topic-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+}
+
+.topic-author {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.topic-author a {
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.avatar-sm {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.topic-stats {
+  display: flex;
+  gap: 10px;
+}
+
+/* Пустой блок */
+.empty-block {
+  background-color: rgba(40, 40, 70, 0.5);
+  border-radius: 10px;
+  padding: 1.5rem;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 0.5rem 0;
+}
+
+.empty-icon {
+  font-size: 3rem;
+  color: rgba(255, 255, 255, 0.3);
+  margin-bottom: 1rem;
+}
+
+.empty-block p {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Форум */
+.forum-main {
+  flex: 1;
+  padding: 1.5rem 0;
+}
+
+/* Подвал форума */
+.forum-footer {
+  background-color: rgba(20, 20, 40, 0.8);
+  padding: 1rem 0;
+  margin-top: auto;
+}
+
+.copyright {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.footer-links {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.footer-link {
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-link:hover {
+  color: #fff;
+}
+
+/* Статистика форума */
+.forum-stats {
+  margin-top: 1.5rem;
+}
+
+.stats-row {
+  margin-right: -10px;
+  margin-left: -10px;
+}
+
+.stat-card {
+  background-color: rgba(40, 40, 70, 0.5);
+  border-radius: 10px;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 1rem;
+  min-height: 80px;
+}
+
+.stat-icon {
+  font-size: 2.5rem;
+  color: rgba(81, 169, 255, 0.8);
+}
+
+.stat-content h4 {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1rem;
+}
+
+.stat-number {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0;
+  color: #fff;
+}
+
+/* Кнопки пагинации */
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.pagination-item {
+  background-color: rgba(40, 40, 70, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  padding: 0.5rem 0.8rem;
+  margin: 0 3px;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.pagination-item.active {
+  background-color: rgba(81, 169, 255, 0.5);
+}
+
+.pagination-item:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Аватар по умолчанию */
+.avatar-default {
+  background-color: rgba(81, 169, 255, 0.3);
+  color: #fff;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+}
+
+
+/* Одна и та же сетка в шапке и в каждой строке: фиксированные средние колонки,
+   иначе у каждой .topic-item колонки fr пересчитываются по min-content темы — «Автор» и «Ответы» пляшут. */
+.topic-list-header {
+  display: grid;
+  grid-template-columns: minmax(50%, 3fr) 11rem 5rem minmax(12rem, 2fr);
+  column-gap: 0.75rem;
+  padding: 0.8rem 1.5rem;
+  background-color: rgba(30, 30, 60, 0.4);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  font-weight: 600;
+  align-items: center;
+  border-radius: 10px;
+  margin-bottom: 0;
+}
+
+.topic-item {
+  display: grid;
+  grid-template-columns: minmax(50%, 3fr) 11rem 5rem minmax(12rem, 2fr);
+  column-gap: 0.75rem;
+  padding: 0.8rem 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  align-items: center;
+  margin-bottom: 0;
+}
+
+.topic-item > .topic-main,
+.topic-item > .topic-author-info,
+.topic-item > .topic-stats,
+.topic-item > .topic-last-post {
+  min-width: 0;
+}
+
+.topic-author-info,
+.topic-stats,
+.topic-last-post {
+  display: flex;
+  align-items: center;
+  min-height: 100%;
+}
+
+.topic-author-info,
+.topic-stats {
+  justify-content: center;
+  width: 100%;
+  max-width: 100%;
+}
+
+.topic-author-info .author-link {
+  display: block;
+  flex: 1 1 auto;
+  min-width: 0;
+  width: auto;
+  max-width: 100%;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Репутация: иконка и число в одну строку (иначе flex-сжатие колонки рвёт строку между ★ и числом) */
+.topic-author-info .author-karma-line {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.28rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+  line-height: 1;
+  min-width: max-content;
+}
+
+.topic-author-info .author-karma-line i {
+  display: inline-block;
+  line-height: 1;
+}
+
+.topic-stats .stats-number {
+  width: 100%;
+  text-align: center;
+}
+
+.topic-last-post {
+  justify-content: flex-end;
+  width: 100%;
+  max-width: 100%;
+}
+
+.topic-last-post .last-post-info {
+  align-items: flex-end;
+  text-align: right;
+}
+
+.topic-last-post .no-replies {
+  width: 100%;
+  text-align: right;
+}
+
+.header-topic,
+.header-author,
+.header-stats,
+.header-last-post {
+  padding: 0.5rem 0;
+}
+
+.topic-list-header .header-author,
+.topic-list-header .header-stats {
+  text-align: center;
+}
+
+.topic-list-header .header-last-post {
+  text-align: right;
+}
+
+.topic-list-header .header-topic {
+  min-width: 0;
+}
+
+/* Стили для таблицы тем */
+.theme-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem; /* Отступ между заголовком и списком тем */
+}
+
+.theme-table th {
+  text-align: left;
+  padding: 0.8rem;
+  background-color: rgba(30, 30, 60, 0.4);
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 600;
+}
+
+.theme-table td {
+  padding: 0.8rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  vertical-align: middle;
+}
+
+.theme-table tr {
+  transition: background-color 0.3s ease;
+}
+
+.theme-table tr:hover {
+  background-color: rgba(50, 50, 80, 0.3);
+}
+
+.theme-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Стили для страницы темы */
+.topic-detail-container {
+  margin-bottom: 2rem;
+}
+
+.topic-header {
+  background-color: rgba(50, 50, 80, 0.5);
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.topic-status {
+  margin-bottom: 0.5rem;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.3rem 0.6rem;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  margin-right: 0.5rem;
+}
+
+.status-badge.sticky {
+  background-color: rgba(255, 193, 7, 0.3);
+  border: 1px solid rgba(255, 193, 7, 0.5);
+}
+
+.status-badge.closed {
+  background-color: rgba(220, 53, 69, 0.3);
+  border: 1px solid rgba(220, 53, 69, 0.5);
+}
+
+.topic-title {
+  font-size: 1.8rem;
+  margin: 0.5rem 0;
+}
+
+.topic-meta {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.topic-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.topic-author a, .topic-info a {
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.topic-author a:hover, .topic-info a:hover {
+  color: #51A9FF;
+}
+
+.topic-actions {
+  margin-top: 0.5rem;
+}
+
+.topic-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0.5rem 1rem;
+  background-color: rgba(81, 169, 255, 0.3);
+  border: 1px solid rgba(81, 169, 255, 0.5);
+  border-radius: 50px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.topic-button:hover {
+  background-color: rgba(81, 169, 255, 0.5);
+  box-shadow: 0 0 10px rgba(81, 169, 255, 0.4);
+}
+
+.posts-container {
+  margin-bottom: 1.5rem;
+}
+
+.post {
+  background-color: rgba(40, 40, 70, 0.5);
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+}
+
+.post.original-post {
+  background-color: rgba(50, 50, 80, 0.5);
+  border-left: 4px solid rgba(81, 169, 255, 0.7);
+}
+
+.post-sidebar {
+  width: 200px;
+  padding: 1.5rem;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: rgba(30, 30, 60, 0.4);
+  border-radius: 10px 0 0 10px;
+}
+
+.post-author {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.user-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar-default {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(81, 169, 255, 0.3);
+  color: #fff;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.user-name {
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+  margin-bottom: 0.3rem;
+  display: block;
+}
+
+.user-name:hover {
+  color: #51A9FF;
+}
+
+.user-role {
+  font-size: 0.8rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 5px;
+  color: #fff;
+  margin-bottom: 0.5rem;
+  display: inline-block;
+}
+
+.user-role.admin {
+  background-color: rgba(220, 53, 69, 0.5);
+}
+
+.user-role.moderator {
+  background-color: rgba(255, 193, 7, 0.5);
+}
+
+.user-role.user {
+  background-color: rgba(108, 117, 125, 0.5);
+}
+
+.user-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin-top: 0.5rem;
+}
+
+.user-stats .stat-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.post-content-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.post-header {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: rgba(30, 30, 60, 0.2);
+}
+
+.post-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.post-link {
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.post-time {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.post-content {
+  padding: 1.5rem;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.9);
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  min-height: 100px;
+}
+
+.post-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: space-between;
+  background-color: rgba(30, 30, 60, 0.2);
+}
+
+.post-actions {
+  display: flex;
+  gap: 15px;
+}
+
+.post-actions a {
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: color 0.3s ease;
+}
+
+.post-actions a:hover {
+  color: #51A9FF;
+}
+
+.post-likes {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.like-button {
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  font-size: 1rem;
+  transition: color 0.3s ease;
+}
+
+.like-button:hover, .like-button i.liked {
+  color: #ff6b6b;
+}
+
+.like-count {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.post-edited {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.5);
+  padding: 0 1.5rem;
+  margin-top: -0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.post-signature {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-style: italic;
+}
+
+.reply-box {
+  background-color: rgba(40, 40, 70, 0.5);
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: 2rem;
+}
+
+.reply-title {
+  font-size: 1.3rem;
+  margin-top: 0;
+  margin-bottom: 1.2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 0.8rem;
+}
+
+.reply-textarea {
+  width: 100%;
+  height: 200px;
+  background-color: rgba(30, 30, 60, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+  padding: 1rem;
+  color: #fff;
+  resize: vertical;
+  margin-bottom: 1rem;
+}
+
+.reply-textarea:focus {
+  outline: none;
+  border-color: rgba(81, 169, 255, 0.5);
+  box-shadow: 0 0 10px rgba(81, 169, 255, 0.3);
+}
+
+.reply-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.submit-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.7rem 1.5rem;
+  background-color: rgba(81, 169, 255, 0.3);
+  border: 1px solid rgba(81, 169, 255, 0.5);
+  border-radius: 5px;
+  color: #fff;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.submit-button:hover {
+  background-color: rgba(81, 169, 255, 0.5);
+  box-shadow: 0 0 15px rgba(81, 169, 255, 0.4);
+}
+
+.topic-closed-message, .login-to-reply {
+  background-color: rgba(40, 40, 70, 0.5);
+  border-radius: 10px;
+  padding: 1.5rem;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: 2rem;
+}
+
+.topic-closed-message i {
+  font-size: 2rem;
+  color: rgba(220, 53, 69, 0.7);
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.login-to-reply a {
+  color: #51A9FF;
+  text-decoration: none;
+}
+
+/* Стили для списка тем */
+.category-detail-container {
+  margin-bottom: 2rem;
+}
+
+.category-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(50, 50, 80, 0.5);
+  padding: 1.2rem 1.5rem;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.category-info {
+  flex: 1;
+}
+
+.category-actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.category-actions .home-toolbar.category-actions__feeds {
+  margin: 0;
+}
+
+.filter-dropdown {
+  padding: 0.5rem 1rem;
+  background-color: rgba(30, 30, 60, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.filter-dropdown:focus {
+  outline: none;
+  border-color: rgba(81, 169, 255, 0.5);
+}
+
+.theme-list {
+  background-color: rgba(40, 40, 70, 0.5);
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+.theme-list-header {
+  display: grid;
+  grid-template-columns: minmax(50%, 3fr) 11rem 5rem minmax(12rem, 2fr);
+  column-gap: 0.75rem;
+  background-color: rgba(30, 30, 60, 0.4);
+  padding: 0.8rem 1.5rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 600;
+  border-radius: 10px 10px 0 0; /* Скругление только верхних углов */
+}
+
+.theme-item {
+  display: grid;
+  grid-template-columns: minmax(50%, 3fr) 11rem 5rem minmax(12rem, 2fr);
+  column-gap: 0.75rem;
+  padding: 0.8rem 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  transition: background-color 0.3s ease;
+  align-items: center;
+  margin-bottom: 5px; /* Добавлен отступ между темами */
+}
+
+.theme-item:hover {
+  background-color: rgba(50, 50, 80, 0.3);
+}
+
+.theme-item:last-child {
+  border-bottom: none;
+}
+
+.theme-main {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.theme-icon {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin-top: 0.2rem;
+}
+
+.theme-icon.sticky {
+  color: rgba(255, 193, 7, 0.8);
+}
+
+.theme-icon.closed {
+  color: rgba(220, 53, 69, 0.8);
+}
+
+.theme-info {
+  min-width: 0;
+}
+
+.theme-title-link {
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: 500;
+  display: block;
+  margin-bottom: 0.3rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.3s ease;
+}
+
+.theme-title-link:hover {
+  color: #51A9FF;
+}
+
+.theme-meta {
+  display: flex;
+  gap: 10px;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.theme-date, .theme-views {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.theme-author-info {
+  text-align: center;
+}
+
+.author-link {
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.author-link:hover {
+  color: #51A9FF;
+}
+
+.theme-stats {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stats-number {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.theme-last-post {
+  padding-left: 1rem;
+}
+
+.last-post-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 0.9rem;
+}
+
+.last-author {
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.last-author:hover {
+  color: #51A9FF;
+}
+
+.last-date {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.85rem;
+}
+
+.last-link {
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.last-link:hover {
+  color: #51A9FF;
+}
+
+.no-replies {
+  color: rgba(255, 255, 255, 0.5);
+  font-style: italic;
+}
+
+.empty-topic-list {
+  padding: 2rem;
+  text-align: center;
+}
+
+/* Стили для создания темы */
+.create-form-container {
+  margin-bottom: 2rem;
+}
+
+/* Жалоба на тему / пост */
+.report-form-page {
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto 2rem auto;
+  padding: 0 1rem;
+  box-sizing: border-box;
+}
+
+.report-form-card {
+  background-color: rgba(50, 50, 80, 0.5);
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1.75rem 2rem 2rem;
+}
+
+.report-form-title {
+  text-align: center;
+  margin: 0 0 0.75rem 0;
+  font-size: 1.35rem;
+  color: #fff;
+}
+
+.report-form-intro {
+  text-align: center;
+  margin: 0 0 1.5rem 0;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.report-form .form-group {
+  margin-bottom: 1.5rem;
+}
+
+.report-form .report-reason-input {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  min-height: 180px;
+}
+
+.report-form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 0.25rem;
+}
+
+/* Личные сообщения: переписка (не использовать .post — там отступы темы форума) */
+.dm-thread-toolbar {
+  margin: 0 0 1.25rem 0;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dm-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: #51a9ff;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.dm-back-link:hover {
+  color: #7dc4ff;
+  text-decoration: underline;
+}
+
+.dm-messages {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin-bottom: 1.25rem;
+}
+
+.dm-message {
+  margin: 0;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  background-color: rgba(30, 30, 60, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.dm-message-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  margin: 0 0 0.35rem 0;
+}
+
+.dm-message-author {
+  font-weight: 600;
+  color: #51a9ff;
+  font-size: 0.95rem;
+}
+
+.dm-message-time {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin-left: auto;
+}
+
+.dm-message-body {
+  margin: 0;
+  padding: 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.88);
+  word-break: break-word;
+}
+
+.dm-thread-compose {
+  margin-top: 0;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mod-reports-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.mod-report-card .mod-report-meta {
+  margin: 0.5rem 0 0 0;
+  padding: 0.5rem 0 0 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.65);
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.mod-report-meta__item a {
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.mod-report-meta__item a:hover {
+  color: #51a9ff;
+  text-decoration: underline;
+}
+
+.mod-report-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-top: 0.85rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.mod-report-action-form {
+  margin: 0;
+}
+
+/* Личные сообщения: список и превью в профиле */
+.dm-inbox-page .dm-inbox-hint,
+.profile-dm-hint {
+  margin: 0 0 1.25rem 0;
+  padding: 0 0.25rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.dm-inbox-list,
+.dm-preview-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.dm-inbox-item,
+.dm-preview-item {
+  border-radius: 8px;
+  background-color: rgba(30, 30, 60, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.dm-inbox-item:hover,
+.dm-preview-item:hover {
+  border-color: rgba(81, 169, 255, 0.35);
+  background-color: rgba(30, 30, 60, 0.5);
+}
+
+.dm-inbox-item--unread,
+.dm-preview-item--unread {
+  border-color: rgba(81, 169, 255, 0.45);
+  background-color: rgba(81, 169, 255, 0.08);
+}
+
+.dm-inbox-link,
+.dm-preview-link {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  padding: 1rem 1.15rem;
+  color: rgba(255, 255, 255, 0.92);
+  text-decoration: none;
+  box-sizing: border-box;
+}
+
+.dm-preview-link {
+  padding: 0.75rem 1rem;
+}
+
+.dm-inbox-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  width: 100%;
+}
+
+.dm-inbox-peer,
+.dm-preview-peer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.dm-inbox-peer-name {
+  display: inline-block;
+  padding: 0.2rem 0.65rem;
+  border-radius: 6px;
+  background-color: rgba(81, 169, 255, 0.2);
+  border: 1px solid rgba(81, 169, 255, 0.35);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.95rem;
+  line-height: 1.3;
+}
+
+.dm-inbox-time {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.5);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.dm-inbox-badge,
+.dm-preview-badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  background: rgba(81, 169, 255, 0.35);
+  color: #fff;
+}
+
+.dm-inbox-snippet,
+.dm-preview-snippet {
+  margin: 0;
+  padding: 0;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.78);
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.dm-inbox-dir,
+.dm-preview-dir {
+  color: rgba(255, 255, 255, 0.5);
+  margin-right: 0.25rem;
+}
+
+.dm-inbox-empty {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* Уведомления: сетка карточек как у блоков на главной */
+.notifications-read-all-form {
+  margin: 0;
+}
+
+.notifications-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.notification-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 0.85rem 1rem;
+  border-radius: 12px;
+  background-color: rgba(30, 30, 60, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+  min-height: 100%;
+  box-sizing: border-box;
+}
+
+.notification-card:hover {
+  border-color: rgba(81, 169, 255, 0.4);
+  background-color: rgba(40, 40, 70, 0.45);
+  transform: translateY(-2px);
+}
+
+.notification-card--unread {
+  border-color: rgba(81, 169, 255, 0.45);
+  background-color: rgba(81, 169, 255, 0.1);
+}
+
+.notification-card__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.notification-card__badge {
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  background: rgba(81, 169, 255, 0.35);
+  color: #fff;
+}
+
+.notification-card__badge--read {
+  background: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.notification-card__time {
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.5);
+  white-space: nowrap;
+}
+
+.notification-card__text {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.profile-dm-block {
+  padding: 1.5rem 2rem;
+  background-color: rgba(30, 30, 60, 0.25);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.profile-dm-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.profile-dm-empty {
+  margin: 0;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.profile-dm-empty a {
+  color: #51a9ff;
+}
+
+.profile-actions--dm {
+  margin-top: 1rem;
+}
+
+.profile-dm-cta {
+  font-size: 1rem;
+}
+
+@media (max-width: 991px) {
+  .notifications-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 576px) {
+  .notifications-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dm-inbox-top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .dm-message-time {
+    margin-left: 0;
+  }
+}
+
+.forum-rules {
+  background-color: rgba(81, 169, 255, 0.1);
+  border: 1px solid rgba(81, 169, 255, 0.3);
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.rules-title {
+  font-size: 1.2rem;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: #51A9FF;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rules-list {
+  margin: 0;
+  padding-left: 1.5rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.rules-list li {
+  margin-bottom: 0.5rem;
+}
+
+.rules-list li:last-child {
+  margin-bottom: 0;
+}
+
+.create-topic-container {
+  background-color: rgba(40, 40, 70, 0.5);
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.create-topic-header {
+  padding: 1.2rem 1.5rem;
+  background-color: rgba(30, 30, 60, 0.4);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px 10px 0 0; /* Скругление только верхних углов */
+}
+
+.create-topic-title {
+  font-size: 1.3rem;
+  margin: 0;
+}
+
+.create-topic-content {
+  padding: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.form-input, .form-select, .form-textarea {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  background-color: rgba(30, 30, 60, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+  color: #fff;
+  font-family: inherit;
+}
+
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  outline: none;
+  border-color: rgba(81, 169, 255, 0.5);
+  box-shadow: 0 0 10px rgba(81, 169, 255, 0.3);
+}
+
+.form-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 16px 12px;
+}
+
+.form-textarea {
+  min-height: 200px;
+  resize: vertical;
+}
+
+.form-help {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.form-help a {
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.form-help a:hover {
+  color: #51A9FF;
+}
+
+.form-checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.form-checkbox input {
+  margin-top: 0.25rem;
+}
+
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.cancel-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.7rem 1.5rem;
+  background-color: rgba(108, 117, 125, 0.3);
+  border: 1px solid rgba(108, 117, 125, 0.5);
+  border-radius: 5px;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.cancel-button:hover {
+  background-color: rgba(108, 117, 125, 0.5);
+}
+
+.editor-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  padding: 0.8rem;
+  background-color: rgba(30, 30, 60, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: none;
+  border-radius: 5px 5px 0 0;
+}
+
+.editor-button {
+  width: 36px;
+  height: 36px;
+  border-radius: 4px;
+  background-color: rgba(50, 50, 80, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.editor-button:hover {
+  background-color: rgba(81, 169, 255, 0.3);
+  border-color: rgba(81, 169, 255, 0.5);
+}
+
+/* Стили для профиля пользователя */
+.user-profile-container {
+  background-color: rgba(40, 40, 70, 0.5);
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+.user-profile-header {
+  padding: 2rem;
+  background-color: rgba(30, 30, 60, 0.4);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  gap: 2rem;
+}
+
+.user-avatar-large {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  flex-shrink: 0;
+}
+
+.user-avatar-large .avatar-default {
+  font-size: 3rem;
+}
+
+.user-info-block {
+  flex: 1;
+}
+
+.user-profile-name {
+  font-size: 2rem;
+  margin: 0 0 0.5rem 0;
+}
+
+.user-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin: 1rem 0;
+}
+
+.user-stats .stat-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-value {
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.online-badge {
+  background-color: rgba(46, 204, 113, 0.3);
+  border: 1px solid rgba(46, 204, 113, 0.5);
+  border-radius: 5px;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.85rem;
+}
+
+.profile-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.edit-profile-btn, .change-password-btn, .manage-email-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0.5rem 1rem;
+  background-color: rgba(81, 169, 255, 0.3);
+  border: 1px solid rgba(81, 169, 255, 0.5);
+  border-radius: 5px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.edit-profile-btn:hover, .change-password-btn:hover, .manage-email-btn:hover {
+  background-color: rgba(81, 169, 255, 0.5);
+}
+
+.profile-signature {
+  padding: 1.5rem 2rem;
+  background-color: rgba(30, 30, 60, 0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.section-title {
+  font-size: 1.2rem;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.signature-content {
+  padding-left: 1rem;
+  border-left: 3px solid rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.8);
+  font-style: italic;
+}
+
+.profile-content {
+  padding: 1.5rem 2rem;
+}
+
+.profile-section {
+  margin-bottom: 2rem;
+}
+
+.profile-section:last-child {
+  margin-bottom: 0;
+}
+
+.user-topics-list, .user-posts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Только блоки тем/постов в профиле — не трогать .topic-list .topic-item (там display: grid) */
+.user-topics-list > .topic-item,
+.user-posts-list > .post-item {
+  background-color: rgba(30, 30, 60, 0.3);
+  border-radius: 8px;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background-color 0.3s ease;
+}
+
+.user-topics-list > .topic-item:hover,
+.user-posts-list > .post-item:hover {
+  background-color: rgba(30, 30, 60, 0.5);
+}
+
+.user-topics-list .topic-details,
+.user-posts-list .post-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.user-topics-list .topic-meta a,
+.user-posts-list .post-meta a {
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.user-topics-list .topic-meta a:hover,
+.user-posts-list .post-meta a:hover {
+  color: #51A9FF;
+}
+
+.search-post .post-topic a {
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.search-post .post-topic a:hover {
+  color: #51A9FF;
+}
+
+.topic-time, .post-time {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin-top: 0.3rem;
+}
+
+.post-content-preview {
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0.5rem 0;
+  font-size: 0.9rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Профиль: компактная шапка и блоки «последние темы / сообщения» */
+.user-profile-container .user-profile-header {
+  padding: 1rem 1.15rem;
+  gap: 1rem 1.15rem;
+  align-items: flex-start;
+}
+
+.user-profile-container .user-avatar-large {
+  width: 84px;
+  height: 84px;
+  border-width: 2px;
+}
+
+.user-profile-container .user-avatar-large .avatar-default {
+  font-size: 2rem;
+}
+
+.user-profile-container .user-profile-name {
+  font-size: 1.35rem;
+  margin: 0 0 0.25rem 0;
+}
+
+.user-profile-container .user-stats--compact {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.35rem 0.65rem;
+  margin: 0.5rem 0 0.6rem;
+}
+
+.user-profile-container .user-stats--compact .stat-item {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.user-profile-container .user-stats--compact .stat-value {
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.user-profile-container .user-stats--compact .stat-label {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.user-profile-container .user-stats--compact .stat-item--wide {
+  grid-column: 1 / -1;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.12rem;
+}
+
+.user-profile-container .user-stats--compact .stat-value--wrap {
+  font-size: 0.8rem;
+  font-weight: 500;
+  word-break: break-all;
+  line-height: 1.3;
+  max-width: 100%;
+}
+
+.user-profile-container .profile-actions {
+  margin-top: 0.55rem;
+  gap: 0.45rem;
+}
+
+.user-profile-container .profile-content--compact {
+  padding: 1rem 1.15rem;
+}
+
+.user-profile-container .profile-section--compact {
+  margin-bottom: 1.1rem;
+}
+
+.user-profile-container .profile-section--compact:last-child {
+  margin-bottom: 0;
+}
+
+.user-profile-container .section-title--compact {
+  font-size: 1.05rem;
+  margin-bottom: 0.2rem;
+}
+
+.user-profile-container .profile-section-hint {
+  margin: 0 0 0.4rem 0;
+  font-size: 0.76rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.user-profile-container .profile-signature,
+.user-profile-container .profile-dm-block {
+  padding: 0.85rem 1.15rem;
+}
+
+.user-profile-container .user-activity-list {
+  gap: 0.4rem;
+}
+
+.user-profile-container .user-activity-list > .profile-activity-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.45rem 0.65rem;
+  padding: 0.45rem 0.65rem;
+  border-radius: 6px;
+}
+
+.user-profile-container .user-posts-list > .profile-activity-card {
+  grid-template-columns: 1fr;
+  align-items: stretch;
+}
+
+.user-profile-container .profile-activity-title {
+  display: block;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-decoration: none;
+  line-height: 1.28;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-profile-container .profile-activity-title:hover {
+  color: #51A9FF;
+}
+
+.user-profile-container .profile-activity-sub {
+  font-size: 0.76rem;
+  color: rgba(255, 255, 255, 0.55);
+  margin-top: 0.1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-profile-container .profile-activity-sub a {
+  color: #9fd2ff;
+  text-decoration: none;
+}
+
+.user-profile-container .profile-activity-sub a:hover {
+  text-decoration: underline;
+}
+
+.user-profile-container .profile-activity-sep {
+  margin: 0 0.22rem;
+  opacity: 0.45;
+}
+
+.user-profile-container .profile-activity-sub .topic-time {
+  margin-top: 0;
+  display: inline;
+  font-size: inherit;
+  color: inherit;
+}
+
+.user-profile-container .profile-activity-stat {
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  white-space: nowrap;
+}
+
+.user-profile-container .profile-activity-stat i {
+  margin-right: 0.22rem;
+  opacity: 0.85;
+}
+
+.user-profile-container .profile-activity-topic-line {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.user-profile-container .profile-activity-topic-line a {
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.user-profile-container .profile-activity-topic-line a:hover {
+  color: #51A9FF;
+}
+
+.user-profile-container .profile-post-snippet {
+  margin: 0.18rem 0 0.1rem;
+  font-size: 0.8rem;
+  line-height: 1.32;
+  -webkit-line-clamp: 2;
+}
+
+.user-profile-container .profile-activity-card .post-time {
+  margin-top: 0.15rem;
+  font-size: 0.72rem;
+}
+
+@media (max-width: 576px) {
+  .user-profile-container .user-stats--compact {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .user-profile-container .user-activity-list > .profile-activity-card.topic-item {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  .user-profile-container .profile-activity-stat {
+    justify-self: flex-start;
+  }
+}
+
+.no-content-message {
+  background-color: rgba(30, 30, 60, 0.3);
+  border-radius: 8px;
+  padding: 1.5rem;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.7);
+  font-style: italic;
+}
+
+/* Редактирование профиля */
+.edit-profile-container {
+  margin-bottom: 2rem;
+}
+
+.auth-box {
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: rgba(40, 40, 70, 0.5);
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.auth-header {
+  padding: 1.5rem;
+  background-color: rgba(30, 30, 60, 0.4);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+  border-radius: 10px 10px 0 0; /* Скругление только верхних углов */
+}
+
+.auth-title {
+  font-size: 1.5rem;
+  margin: 0 0 0.5rem 0;
+}
+
+.auth-subtitle {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.auth-content {
+  padding: 2rem;
+}
+
+.auth-form-group {
+  margin-bottom: 1.5rem;
+}
+
+.auth-label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+#id_email, #id_avatar, #id_signature {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  background-color: rgba(30, 30, 60, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+  color: #fff;
+  font-family: inherit;
+}
+
+#id_signature {
+  min-height: 120px;
+  resize: vertical;
+}
+
+#id_email:focus, #id_avatar:focus, #id_signature:focus {
+  outline: none;
+  border-color: rgba(81, 169, 255, 0.5);
+  box-shadow: 0 0 10px rgba(81, 169, 255, 0.3);
+}
+
+.current-avatar {
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.avatar-preview {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  display: inline-block;
+}
+
+.auth-help {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.email-management-link, .change-password-link {
+  color: #51A9FF;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.form-error {
+  color: #ff6b6b;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+}
+
+.auth-button {
+  width: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.7rem 1.5rem;
+  background-color: rgba(81, 169, 255, 0.3);
+  border: 1px solid rgba(81, 169, 255, 0.5);
+  border-radius: 5px;
+  color: #fff;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.auth-button:hover {
+  background-color: rgba(81, 169, 255, 0.5);
+  box-shadow: 0 0 15px rgba(81, 169, 255, 0.4);
+}
+
+/* Стили для поиска */
+.search-results-container {
+  background-color: rgba(40, 40, 70, 0.5);
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.search-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.search-title {
+  font-size: 1.8rem;
+  margin: 0;
+}
+
+.search-input-container {
+  display: flex;
+  width: 100%;
+  max-width: 400px;
+}
+
+.search-summary {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.search-section {
+  margin-bottom: 2rem;
+}
+
+.search-post {
+  margin-bottom: 1rem;
+}
+
+.search-highlight {
+  background-color: rgba(255, 193, 7, 0.3);
+  padding: 0 3px;
+  border-radius: 3px;
+}
+
+.view-post-link {
+  display: inline-block;
+  margin-top: 0.5rem;
+  color: #51A9FF;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.view-post-link:hover {
+  text-decoration: underline;
+}
+
+.no-results {
+  background-color: rgba(30, 30, 60, 0.3);
+  border-radius: 8px;
+  padding: 2rem;
+  text-align: center;
+}
+
+.search-instructions {
+  background-color: rgba(30, 30, 60, 0.3);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+/* Кнопка "Новая тема" */
+.new-theme-button {
+  background-color: rgba(255, 64, 129, 0.6);
+  border: 1px solid rgba(255, 64, 129, 0.8);
+  color: white;
+  padding: 0.5rem 1.2rem;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.new-theme-button:hover {
+  background-color: rgba(255, 64, 129, 0.8);
+  box-shadow: 0 0 15px rgba(255, 64, 129, 0.5);
+}
+
+/* Стили для категорий на главной странице */
+.forum-category {
+  background-color: rgba(40, 40, 70, 0.5);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+  width: 100%;
+}
+
+.category-header {
+  background-color: rgba(30, 30, 60, 0.4);
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Мета-информация для тем */
+.theme-meta {
+  display: flex;
+  align-items: center;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.theme-meta .time {
+  margin-left: 1rem;
+}
+
+.theme-meta .views {
+  margin-left: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+/* Форум категории - разделы на главной */
+.forum-sections {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Блок с категориями на главной */
+.razdeliy-forum-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+/* Стили для карточек разделов на главной странице */
+.forum-section-card {
+  background-color: rgba(40, 40, 70, 0.5);
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.forum-section-header {
+  background-color: rgba(30, 30, 60, 0.5);
+  padding: 1rem 1.5rem;
+  border-radius: 10px 10px 0 0;
+}
+
+.forum-section-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 0;
+  color: #fff;
+}
+
+.forum-section-body {
+  padding: 1rem;
+}
+
+/* Исправление для секций форума на главной */
+.forum-section {
+  width: 100%;
+  background-color: rgba(40, 40, 70, 0.5);
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.forum-section-header {
+  background-color: rgba(30, 30, 60, 0.5);
+  padding: 1rem 1.5rem;
+  border-radius: 10px 10px 0 0;
+}
+
+.forum-section-title {
+  font-size: 1.3rem;
+  margin: 0;
+  color: #fff;
+}
+
+.forum-section-body {
+  padding: 1rem 1.5rem;
+}
+
+.forum-section-description {
+  color: rgba(255, 255, 255, 0.8);
+  margin-top: 0.5rem;
+}
+
+/* Специальные стили для разделов на главной странице */
+.forum-sections-list {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+/* Адаптивность */
+@media (min-width: 993px) and (max-width: 1400px) {
+  .nav-menu .nav-link {
+    padding: 0.2rem 0.5rem;
+    font-size: 0.8rem;
+  }
+
+  .auth-button {
+    padding: 0.25rem 0.6rem;
+    font-size: 0.8rem;
+  }
+
+  .forum-logo {
+    font-size: 1.3rem;
+  }
+
+  .search-container {
+    max-width: min(280px, 100%);
+    min-width: 140px;
+  }
+
+  .nav-menu {
+    gap: 5px;
+  }
+
+  .auth-buttons {
+    gap: 5px;
+  }
+
+  .ml-auto {
+    margin-left: auto;
+  }
+}
+
+@media (max-width: 992px) {
+  .desktop-header {
+    display: none;
+  }
+
+  .mobile-header {
+    display: block;
+  }
+
+  .mobile-menu-toggle {
+    display: block;
+    font-size: 1.2rem;
+    background-color: rgba(81, 169, 255, 0.3);
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+  }
+
+  .forum-logo {
+    font-size: 1.5rem;
+  }
+
+  .container-title {
+    font-size: 1.5rem;
+  }
+
+  .auth-buttons .auth-button {
+    padding: 0.2rem 0.5rem;
+    font-size: 0.75rem;
+  }
+
+  /* Улучшаем отображение в мобильной шапке */
+  .mobile-header .search-container {
+    max-width: 100%;
+  }
+
+  .theme-list-header, .theme-item {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  .header-author, .header-stats, .header-last-post {
+    display: none;
+  }
+
+  .theme-author-info, .theme-stats, .theme-last-post {
+    text-align: left;
+    padding-left: 0;
+    margin-left: 0;
+  }
+
+  .theme-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .post {
+    flex-direction: column;
+  }
+
+  .post-sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px 10px 0 0;
+    padding: 1rem;
+  }
+
+  .user-profile-header {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    text-align: center;
+  }
+
+  .user-info-block {
+    width: 100%;
+  }
+
+  .user-stats {
+    justify-content: center;
+  }
+
+  .profile-actions {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .forum-footer .row {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .footer-links {
+    justify-content: flex-start;
+  }
+
+  .auth-container {
+    justify-content: flex-end;
+  }
+
+  .stat-card {
+    margin-bottom: 1rem;
+    min-height: 70px;
+  }
+
+  .forum-logo {
+    font-size: 1.3rem;
+  }
+
+  .search-input {
+    padding: 0.3rem 0.8rem;
+    font-size: 0.8rem;
+  }
+
+  /* Дополнительные корректировки для улучшения верстки */
+  .col-12 {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  .container {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .category-header, .create-topic-header, .search-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .category-actions, .search-form {
+    width: 100%;
+    margin-top: 1rem;
+  }
+
+  .filter-dropdown, .search-input-container {
+    width: 100%;
+  }
+
+  .post-header, .post-footer {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .breadcrumb-container {
+    padding: 0.6rem 0.8rem;
+  }
+
+  .breadcrumb-list {
+    flex-wrap: wrap;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .form-actions .submit-button, .form-actions .cancel-button {
+    width: 100%;
+  }
+
+  .user-topics-list > .topic-item,
+  .user-posts-list > .post-item {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .user-topics-list .topic-details,
+  .user-posts-list .post-details {
+    width: 100%;
+  }
+
+  .user-topics-list > .topic-item .topic-stats {
+    margin-top: 0.5rem;
+    margin-left: 0;
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 576px) {
+  .forum-main {
+    padding: 0.5rem 0;
+  }
+
+  .category-card, .topic-card, .empty-block, .stat-card {
+    padding: 0.8rem;
+  }
+
+  .container-title {
+    font-size: 1.1rem;
+    padding-bottom: 0.4rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .topic-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .topic-list .topic-info-row .topic-meta {
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 0;
+  }
+
+  .topic-stats {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .topic-list .topic-stats {
+    width: auto;
+    justify-content: center;
+  }
+
+  .forum-logo {
+    font-size: 1.2rem;
+  }
+
+  .auth-buttons .auth-button {
+    padding: 0.15rem 0.4rem;
+    font-size: 0.7rem;
+  }
+
+  .user-nav {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .mobile-top-row .auth-buttons {
+    display: flex;
+    gap: 5px;
+  }
+
+  /* Блоки статистики в одну колонку на небольших экранах */
+  .stat-card {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .stat-icon {
+    font-size: 1.5rem;
+  }
+
+  .stat-content h4 {
+    font-size: 0.9rem;
+    margin-bottom: 0.2rem;
+  }
+
+  .stat-number {
+    font-size: 1.2rem;
+  }
+
+  /* Уменьшаем отступы для маленьких экранов */
+  .category-container {
+    margin-bottom: 1rem;
+    padding: 0.8rem;
+  }
+
+  /* Уменьшаем сам футер */
+  .forum-footer {
+    padding: 0.8rem 0;
+    font-size: 0.8rem;
+  }
+
+  .footer-row {
+    text-align: center;
+  }
+
+  .footer-links {
+    justify-content: center;
+    margin-top: 0.5rem;
+    gap: 10px;
+  }
+
+  .footer-link {
+    font-size: 0.8rem;
+    white-space: nowrap;
+  }
+
+  .editor-toolbar {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .editor-button {
+    padding: 0.3rem;
+    font-size: 0.8rem;
+  }
+
+  .auth-box {
+    padding: 1rem;
+  }
+
+  .auth-header {
+    padding: 1rem;
+  }
+
+  .auth-content {
+    padding: 1rem;
+  }
+
+  .topic-detail-container, .search-results-container, .user-profile-container {
+    padding: 1rem;
+  }
+
+  .topic-header, .post-header, .post-content, .post-footer {
+    padding: 0.8rem;
+  }
+
+  .post-content {
+    font-size: 0.95rem;
+  }
+
+  .profile-content, .profile-signature, .profile-dm-block {
+    padding: 1rem;
+  }
+
+  .user-profile-header {
+    padding: 1rem;
+  }
+
+  .user-avatar-large {
+    width: 80px;
+    height: 80px;
+  }
+
+  .user-avatar-large .avatar-default {
+    font-size: 2rem;
+  }
+
+  .user-profile-name {
+    font-size: 1.5rem;
+  }
+}
+
+/* Добавляем дополнительные медиа-запросы для сверхмалых экранов */
+@media (max-width: 400px) {
+  .container {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  .forum-main {
+    padding: 0.3rem 0;
+  }
+
+  /* Статистика компактнее */
+  .stat-card {
+    margin-bottom: 0.5rem;
+    padding: 0.6rem;
+    min-height: 60px;
+  }
+
+  .stat-icon {
+    font-size: 1.3rem;
+    margin-right: -5px;
+  }
+
+  .stat-content h4 {
+    font-size: 0.75rem;
+    margin-bottom: 0.2rem;
+  }
+
+  .stat-number {
+    font-size: 1.1rem;
+  }
+
+  /* Блоки в одну колонку */
+  .col-12 {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+
+  /* Футер */
+  .forum-footer {
+    text-align: center;
+    padding: 0.6rem 0;
+  }
+
+  .footer-links {
+    justify-content: center;
+    margin-top: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .copyright {
+    font-size: 0.7rem;
+  }
+
+  .footer-link {
+    font-size: 0.7rem;
+    margin-right: 0.3rem;
+    display: inline-block;
+    margin-bottom: 0.3rem;
+  }
+
+  /* Улучшаем шапку */
+  .mobile-top-row {
+    padding: 0.2rem 0;
+  }
+
+  .mobile-search-row {
+    padding: 0.2rem 0;
+  }
+
+  .auth-buttons .auth-button {
+    padding: 0.1rem 0.3rem;
+    font-size: 0.65rem;
+  }
+
+  .category-container {
+    padding: 0.6rem;
+    margin-bottom: 0.8rem;
+  }
+
+  /* Заголовки блоков */
+  .container-title {
+    font-size: 1rem;
+    padding-bottom: 0.3rem;
+    margin-bottom: 0.6rem;
+  }
+
+  /* Меньше отступов в статистике */
+  .forum-stats {
+    margin-top: 1rem;
+  }
+
+  .empty-block {
+    padding: 1rem 0.5rem;
+  }
+
+  .breadcrumb-container {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.8rem;
+  }
+
+  .user-stats {
+    gap: 0.8rem;
+  }
+
+  .stat-value {
+    font-size: 1rem;
+  }
+
+  .post {
+    margin-bottom: 1rem;
+  }
+
+  .reply-box {
+    padding: 1rem;
+  }
+
+  .reply-title {
+    font-size: 1.1rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .reply-textarea {
+    padding: 0.8rem;
+    height: 150px;
+  }
+
+  .submit-button {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .search-title {
+    font-size: 1.5rem;
+  }
+
+  .search-section {
+    margin-bottom: 1.5rem;
+  }
+
+  .search-post {
+    padding: 0.8rem;
+  }
+}
+
+/* Дополнительные стили для главной страницы форума */
+.forum-sections-wrapper {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Стили для разделов форума на главной странице */
+.forum-section {
+  width: 100%;
+  margin-bottom: 1rem;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* Исправление для заголовка разделов форума */
+.forum-section-header {
+  width: 100%;
+  display: block;
+  padding: 1rem 1.5rem;
+  background-color: rgba(30, 30, 60, 0.5);
+  border-radius: 10px 10px 0 0;
+}
+
+/* Исправление для карточек тем в списке */
+.theme-item {
+  display: flex;
+  align-items: center;
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: rgba(40, 40, 70, 0.5);
+  margin-bottom: 5px;
+}
+
+/* Стили для заголовка и списка тем */
+.theme-name-wrapper {
+  margin-top: 1rem; /* Отступ между заголовком и списком тем */
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.theme-header {
+  padding: 0.8rem 1.5rem;
+  background-color: rgba(30, 30, 60, 0.4);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px 10px 0 0;
+  display: grid;
+  grid-template-columns: minmax(50%, 3fr) 11rem 5rem minmax(12rem, 2fr);
+  column-gap: 0.75rem;
+  align-items: center;
+}
+
+.theme-list-container {
+  background-color: rgba(40, 40, 70, 0.5);
+  border-radius: 0 0 10px 10px;
+}
+
+/* Исправления для списка разделов на главной */
+.section-list {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-card {
+  width: 100%;
+  background-color: rgba(40, 40, 70, 0.5);
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.section-header {
+  background-color: rgba(30, 30, 60, 0.5);
+  padding: 1.2rem 1.5rem;
+  border-radius: 10px 10px 0 0;
+}
+
+.section-title {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.section-description {
+  color: rgba(255, 255, 255, 0.8);
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.section-body {
+  padding: 1rem;
+}
+
+.section-stats {
+  display: flex;
+  gap: 15px;
+  margin-top: 0.5rem;
+}
+
+/* Стили для отображения списка тем в разделе */
+.topic-list-container {
+  margin-top: 1rem;
+}
+
+/* Заголовки хлебных крошек */
+.breadcrumb-title {
+  display: block;
+  margin-bottom: 0.8rem;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+/* Специальные стили для главной страницы */
+.main-title {
+  color: #fff;
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  text-shadow: 0 0 10px rgba(81, 159, 255, 0.5);
+}
+
+/* Разделы форума */
+#razdely-foruma {
+  font-size: 1.5rem;
+  color: #fff;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-weight: 600;
+}
+
+/* Стили для списка категорий на главной */
+.categories-list {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Ширина контейнера списка категорий */
+.forum-content {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ===== Главная страница ===== */
+
+.home-page-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.home-block {
+  width: 100%;
+  background-color: rgba(50, 50, 80, 0.5);
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.85rem;
+}
+
+/* Панель RSS / Atom / закладки на главной */
+.home-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.45rem;
+  margin: 0 0 0.75rem 0;
+}
+
+.home-toolbar__sep {
+  color: rgba(255, 255, 255, 0.28);
+  font-weight: 300;
+  user-select: none;
+  line-height: 1;
+}
+
+.home-toolbar__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.32rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.95);
+  background: rgba(25, 28, 52, 0.65);
+  border: 1px solid rgba(81, 169, 255, 0.35);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+  transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+}
+
+.home-toolbar__link i {
+  font-size: 0.75rem;
+  opacity: 0.9;
+  color: #7ec4ff;
+}
+
+.home-toolbar__link:hover {
+  color: #fff;
+  background: rgba(81, 169, 255, 0.16);
+  border-color: rgba(129, 200, 255, 0.65);
+  box-shadow: 0 0 14px rgba(81, 169, 255, 0.28);
+  transform: translateY(-1px);
+}
+
+.home-toolbar__link:hover i {
+  color: #b8ddff;
+}
+
+.home-toolbar__link--rss {
+  border-color: rgba(255, 152, 102, 0.45);
+}
+
+.home-toolbar__link--rss i {
+  color: #ffb088;
+}
+
+.home-toolbar__link--rss:hover {
+  background: rgba(255, 140, 90, 0.12);
+  border-color: rgba(255, 180, 130, 0.7);
+  box-shadow: 0 0 14px rgba(255, 140, 90, 0.22);
+}
+
+.home-toolbar__link--rss:hover i {
+  color: #ffd4bc;
+}
+
+.home-toolbar__link--atom {
+  border-color: rgba(100, 210, 200, 0.45);
+}
+
+.home-toolbar__link--atom i {
+  color: #7ee8dc;
+}
+
+.home-toolbar__link--atom:hover {
+  background: rgba(80, 200, 190, 0.12);
+  border-color: rgba(120, 230, 215, 0.65);
+  box-shadow: 0 0 14px rgba(80, 210, 195, 0.2);
+}
+
+.home-toolbar__link--atom:hover i {
+  color: #b8fff5;
+}
+
+/* Облако тегов на главной и странице /tags/ + чипы раздела/тега в списках тем */
+.home-tag-cloud__actions {
+  margin: 0 0 0.35rem 0;
+}
+
+.topic-tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0.35rem 0 0 0;
+  line-height: normal;
+}
+
+a.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+  padding: 0.26rem 0.62rem;
+  margin: 0;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.95);
+  background: rgba(25, 28, 52, 0.72);
+  border: 1px solid rgba(81, 169, 255, 0.38);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.15);
+  transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  vertical-align: middle;
+}
+
+a.tag:visited {
+  color: rgba(243, 248, 255, 0.92);
+}
+
+a.tag:hover {
+  color: #fff;
+  background: rgba(81, 169, 255, 0.2);
+  border-color: rgba(129, 200, 255, 0.6);
+  box-shadow: 0 0 12px rgba(81, 169, 255, 0.25);
+}
+
+a.tag small {
+  font-weight: 500;
+  opacity: 0.88;
+  font-size: 0.78em;
+}
+
+.home-tag-cloud__empty {
+  margin: 0;
+  flex: 1 1 100%;
+}
+
+.home-tag-cloud__empty a {
+  color: #7ec4ff;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.home-tag-cloud__empty a:hover {
+  color: #b8ddff;
+  text-decoration: underline;
+}
+
+/* Компактнее чип раздела в строке темы у узкой колонки */
+.topic-info-row .topic-meta a.tag {
+  font-size: 0.74rem;
+  padding: 0.18rem 0.48rem;
+}
+
+.home-sections-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.home-section-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0.9rem;
+  border-radius: 10px;
+  text-decoration: none;
+  background-color: rgba(30, 30, 60, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.3s ease;
+}
+
+.home-section-item:hover {
+  background-color: rgba(40, 40, 70, 0.55);
+  transform: translateY(-2px);
+}
+
+.home-section-title {
+  margin: 0;
+  color: #fff;
+  font-size: 0.95rem;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.home-section-stats {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  white-space: nowrap;
+}
+
+.home-topics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.home-topic-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 0.85rem;
+  border-radius: 12px;
+  background-color: rgba(30, 30, 60, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  min-height: 100%;
+}
+
+.home-topic-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.home-topic-category {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
+  background-color: rgba(81, 169, 255, 0.25);
+  color: #fff;
+  font-size: 0.8rem;
+}
+
+.home-topic-date {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.8rem;
+}
+
+.home-topic-title {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  min-height: 52px;
+}
+
+.home-topic-title a {
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.home-topic-title a:hover {
+  color: #51A9FF;
+}
+
+.home-topic-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 0.6rem;
+  margin-top: auto;
+  flex-wrap: wrap;
+}
+
+.home-topic-author {
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.9rem;
+}
+
+.home-topic-stats {
+  display: flex;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+}
+
+/* ===== Категория ===== */
+
+.topic-list .topic-meta .topic-views {
+  margin-left: 10px;
+}
+
+.topic-main {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 0.7rem;
+}
+
+.topic-icon {
+  flex-shrink: 0;
+}
+
+.topic-info-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 0.65rem;
+  min-width: 0;
+  width: 100%;
+}
+
+/* Общий .topic-info задаёт flex-wrap: wrap — в строке списка тем мета не переносим */
+.topic-info.topic-info-row {
+  flex-wrap: nowrap;
+}
+
+.topic-info-row .topic-title-link {
+  flex: 1 1 0;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.topic-info-row .topic-title-link:hover {
+  color: #51A9FF;
+}
+
+.topic-info-row .topic-meta {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  white-space: nowrap;
+  margin-top: 0;
+  margin-left: auto;
+}
+
+.topic-info-row .topic-meta .topic-date,
+.topic-info-row .topic-meta .topic-views {
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ===== Статические страницы ===== */
+
+.static-page-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.static-page-box {
+  background-color: rgba(50, 50, 80, 0.5);
+  border-radius: 14px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 2rem;
+}
+
+.static-page-title {
+  margin: 0 0 1rem 0;
+  color: #fff;
+  font-size: 1.8rem;
+  text-align: center;
+}
+
+.static-page-content {
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.7;
+}
+
+.static-page-content p,
+.static-page-content li {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.static-page-content ul {
+  padding-left: 1.3rem;
+}
+
+.static-page-content.summernote-body h1,
+.static-page-content.summernote-body h2,
+.static-page-content.summernote-body h3,
+.static-page-content.summernote-body h4,
+.static-page-content.summernote-body h5,
+.static-page-content.summernote-body h6 {
+  margin: 1rem 0 0.5rem;
+  color: #fff;
+  font-weight: 600;
+}
+
+.static-page-content.summernote-body h1 {
+  font-size: 1.65rem;
+}
+
+.static-page-content.summernote-body h2 {
+  font-size: 1.4rem;
+}
+
+.static-page-content.summernote-body h3 {
+  font-size: 1.2rem;
+}
+
+.static-page-content.summernote-body ol {
+  padding-left: 1.3rem;
+}
+
+.static-page-content.summernote-body blockquote {
+  margin: 1rem 0;
+  padding: 0.75rem 1rem;
+  border-left: 4px solid rgba(129, 178, 255, 0.5);
+  background: rgba(20, 20, 50, 0.35);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.static-page-content.summernote-body pre,
+.static-page-content.summernote-body code {
+  font-family: ui-monospace, monospace;
+  font-size: 0.9em;
+}
+
+.static-page-content.summernote-body pre {
+  margin: 1rem 0;
+  padding: 1rem;
+  overflow-x: auto;
+  background: rgba(10, 10, 30, 0.6);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.static-page-content.summernote-body img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.static-page-content.summernote-body table {
+  width: 100%;
+  margin: 1rem 0;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.static-page-content.summernote-body th,
+.static-page-content.summernote-body td {
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 0.5rem 0.65rem;
+  vertical-align: top;
+}
+
+.static-page-content.summernote-body th {
+  background: rgba(30, 30, 60, 0.45);
+  color: #fff;
+}
+
+.static-page-content.summernote-body iframe {
+  max-width: 100%;
+  border: 0;
+  border-radius: 8px;
+}
+
+.static-page-content.summernote-body hr {
+  margin: 1.25rem 0;
+  border: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.static-page-content.summernote-body a {
+  color: #8ec5ff;
+  text-decoration: underline;
+}
+
+.static-page-content.summernote-body a:hover {
+  color: #b8d9ff;
+}
+
+.contact-list {
+  display: grid;
+  gap: 0.85rem;
+  margin-top: 1rem;
+}
+
+.contact-item {
+  background-color: rgba(30, 30, 60, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 1rem;
+}
+
+/* ===== Login / Logout ===== */
+
+/* Формы в шапке сайта (account/base): не полный Bootstrap — свои стили */
+.auth-page-shell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: calc(100vh - 13rem);
+  padding: 1.25rem 0;
+  box-sizing: border-box;
+}
+
+.auth-in-site {
+  width: min(100%, 34rem);
+  flex: 0 0 auto;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  box-sizing: border-box;
+}
+
+.auth-card {
+  background-color: rgba(42, 42, 72, 0.9);
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.32);
+  padding: 1.35rem 1.5rem 1.65rem;
+}
+
+.auth-card .title,
+.auth-card h1.title {
+  margin: 0 0 0.65rem 0;
+  font-size: 1.5rem;
+  color: #fff;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.auth-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-bottom: 0.95rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #8ec9ff;
+  text-decoration: none;
+}
+
+.auth-back:hover {
+  color: #d4ebff;
+  text-decoration: underline;
+}
+
+.auth-lead {
+  margin: 0 0 1.1rem 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.84);
+}
+
+.auth-form .form-group {
+  margin-bottom: 1.05rem;
+}
+
+.auth-form .form-label {
+  display: block;
+  color: rgba(255, 255, 255, 0.94);
+  font-weight: 600;
+  font-size: 0.87rem;
+  margin-bottom: 0.38rem;
+}
+
+.auth-form input[type="text"],
+.auth-form input[type="email"],
+.auth-form input[type="password"],
+.auth-form input[type="url"],
+.auth-form input[type="search"],
+.auth-form input[type="number"],
+.auth-form select,
+.auth-form textarea {
+  width: 100%;
+  max-width: 100%;
+  padding: 0.62rem 0.88rem;
+  background-color: rgba(18, 20, 42, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 8px;
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.94rem;
+  box-sizing: border-box;
+}
+
+.auth-form input::placeholder,
+.auth-form textarea::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.auth-form input:focus,
+.auth-form select:focus,
+.auth-form textarea:focus {
+  outline: none;
+  border-color: rgba(81, 169, 255, 0.7);
+  box-shadow: 0 0 0 3px rgba(81, 169, 255, 0.22);
+}
+
+.auth-form .form-group:has(> input[type="checkbox"]) {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.55rem;
+  margin-bottom: 0.95rem;
+}
+
+.auth-form .form-group:has(> input[type="checkbox"]) .form-label {
+  margin-bottom: 0;
+  order: 2;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.auth-form .form-group:has(> input[type="checkbox"]) input[type="checkbox"] {
+  order: 1;
+  flex-shrink: 0;
+  width: 1.05rem;
+  height: 1.05rem;
+  accent-color: #51a9ff;
+  cursor: pointer;
+}
+
+.auth-form .form-help {
+  display: block;
+  margin-top: 0.32rem;
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+
+.auth-form .form-help ul {
+  margin: 0.35rem 0 0 0;
+  padding-left: 1.15rem;
+}
+
+.auth-form .form-error {
+  display: block;
+  margin-top: 0.32rem;
+  font-size: 0.82rem;
+  color: #ffb4b0;
+}
+
+.auth-form ul.errorlist {
+  margin: 0.32rem 0 0 0;
+  padding-left: 1.1rem;
+  color: #ffb4b0;
+  font-size: 0.82rem;
+}
+
+.btn-primary {
+  background: linear-gradient(180deg, #4d9df0 0%, #2a7ad4 100%);
+  border: 1px solid rgba(130, 195, 255, 0.55);
+  color: #fff;
+  font-weight: 600;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(180deg, #62aeff 0%, #3589e6 100%);
+  box-shadow: 0 4px 20px rgba(81, 169, 255, 0.42);
+}
+
+.btn-block {
+  width: 100%;
+  justify-content: center;
+}
+
+.auth-footer {
+  margin-top: 1.1rem;
+  font-size: 0.92rem;
+  color: rgba(255, 255, 255, 0.68);
+}
+
+.auth-footer a {
+  color: #8ec9ff;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.auth-footer a:hover {
+  color: #d4ecff;
+  text-decoration: underline;
+}
+
+.auth-messages {
+  list-style: none;
+  margin: 0 0 1rem 0;
+  padding: 0;
+}
+
+.auth-messages li {
+  padding: 0.55rem 0.78rem;
+  border-radius: 8px;
+  font-size: 0.88rem;
+}
+
+.auth-messages .alert-success {
+  background: rgba(46, 140, 72, 0.28);
+  border: 1px solid rgba(90, 195, 118, 0.5);
+  color: #c8f5d4;
+}
+
+.auth-messages .alert-error,
+.auth-messages .alert-danger {
+  background: rgba(180, 60, 50, 0.28);
+  border: 1px solid rgba(230, 120, 110, 0.5);
+  color: #ffd4d0;
+}
+
+.mt-3 {
+  margin-top: 1rem;
+}
+
+/* Страница облака тегов */
+.tag-cloud-page .tag-cloud-lead {
+  margin: 0 0 1rem 0;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.95rem;
+  line-height: 1.45;
+  max-width: 42rem;
+}
+
+.tag-cloud-page .topic-tags--page {
+  margin-top: 0.35rem;
+}
+
+.tag-cloud-empty {
+  margin: 0;
+  flex: 1 1 100%;
+}
+
+.tag-topics-pagination {
+  flex-wrap: wrap;
+  gap: 0.65rem 1rem;
+  align-items: center;
+}
+
+.tag-topics-pagination .pagination-link {
+  color: #fff;
+  text-decoration: none;
+  padding: 0.45rem 0.88rem;
+  border-radius: 8px;
+  background: rgba(40, 40, 70, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.tag-topics-pagination .pagination-link:hover {
+  background: rgba(81, 169, 255, 0.28);
+  border-color: rgba(81, 169, 255, 0.45);
+}
+
+.tag-topics-pagination .pagination-meta {
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 0.88rem;
+}
+
+.account-center-page {
+  min-height: calc(100vh - 240px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 2rem 0;
+}
+
+.forum-auth-box {
+  width: 100%;
+  max-width: 560px;
+  background-color: rgba(50, 50, 80, 0.6);
+  border-radius: 14px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  overflow: hidden;
+}
+
+.forum-auth-box .auth-header {
+  background-color: rgba(30, 30, 60, 0.5);
+  padding: 1.4rem 1.6rem;
+  text-align: center;
+}
+
+.forum-auth-box .auth-title {
+  margin: 0 0 0.45rem 0;
+  color: #fff;
+}
+
+.forum-auth-box .auth-subtitle {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.forum-auth-box .auth-content {
+  padding: 1.6rem;
+}
+
+.forum-auth-box .auth-content form {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.forum-auth-box .auth-label {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.forum-auth-box .auth-help {
+  margin: 0.4rem 0 0 0;
+  font-size: 0.85rem;
+  line-height: 1.35;
+  color: rgba(255, 255, 255, 0.58);
+}
+
+.forum-auth-box .auth-footer {
+  text-align: center;
+  margin-top: 0.25rem;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.95rem;
+}
+
+.forum-auth-box .auth-footer a {
+  color: #7ec8ff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.forum-auth-box .auth-footer a:hover {
+  text-decoration: underline;
+}
+
+.forum-auth-box .auth-footer-split {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.35rem 0.65rem;
+  margin-top: 1rem;
+}
+
+.forum-auth-box .auth-footer-sep {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* Чекбокс «принимаю правила» (label.form-checkbox) */
+.forum-auth-box .auth-form-group:has(.form-checkbox) {
+  margin-bottom: 1.25rem;
+}
+
+.forum-auth-box .form-checkbox {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 0.65rem;
+  margin: 0;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.88);
+  font-weight: normal;
+  line-height: 1.4;
+}
+
+.forum-auth-box .form-checkbox input[type="checkbox"] {
+  width: 1.15rem;
+  height: 1.15rem;
+  min-height: 0;
+  margin: 0.2rem 0 0 0;
+  flex-shrink: 0;
+}
+
+.forum-auth-box .form-checkbox .terms-link {
+  color: #7ec8ff;
+  text-decoration: none;
+}
+
+.forum-auth-box .form-checkbox .terms-link:hover {
+  text-decoration: underline;
+}
+
+/* Remember me: подпись и чекбокс в одну строку, чекбокс слева */
+.forum-auth-box .auth-form-group:has(input[type="checkbox"]) {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: nowrap;
+}
+
+.forum-auth-box .auth-form-group:has(input[type="checkbox"]) .auth-label {
+  display: inline;
+  margin-bottom: 0;
+  font-weight: 500;
+  order: 1;
+}
+
+.forum-auth-box .auth-form-group:has(input[type="checkbox"]) input[type="checkbox"] {
+  order: 0;
+  width: 1.15rem;
+  height: 1.15rem;
+  min-height: 0;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+/* Кнопка входа: по центру, ~в 2 раза шире обычной */
+.forum-auth-box form > button.auth-button[type="submit"] {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+  width: min(100%, 22rem);
+  min-width: min(100%, 17.5rem);
+  margin-top: 0.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.forum-auth-box input:not([type="checkbox"]):not([type="radio"]),
+.forum-auth-box textarea,
+.forum-auth-box select {
+  width: 100%;
+  min-height: 60px;
+  padding: 1rem 1rem;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background-color: rgba(20, 20, 40, 0.45);
+  color: #fff;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.forum-auth-box input:not([type="checkbox"]):not([type="radio"]):focus,
+.forum-auth-box textarea:focus,
+.forum-auth-box select:focus {
+  outline: none;
+  border-color: rgba(81, 169, 255, 0.7);
+  box-shadow: 0 0 0 4px rgba(81, 169, 255, 0.15);
+  background-color: rgba(20, 20, 40, 0.7);
+}
+
+.forum-auth-box input[type="checkbox"] {
+  accent-color: #51A9FF;
+}
+
+.forum-auth-box .auth-form-group ul {
+  margin: 0.5rem 0 0 1rem;
+  color: #ffb3b3;
+}
+
+.forum-auth-box .form-error,
+.forum-auth-box .errorlist,
+.forum-auth-box .errorlist li {
+  color: #ff9d9d;
+  list-style: none;
+  margin: 0.4rem 0 0 0;
+  padding: 0;
+}
+
+.forum-auth-box .auth-button,
+.logout-box .cancel-button {
+  min-height: 50px;
+  border-radius: 16px;
+  padding: 0.8rem 1.3rem;
+}
+
+.logout-box {
+  max-width: 520px;
+}
+
+.logout-box .logout-message {
+  color: rgba(255, 255, 255, 0.82);
+  margin-bottom: 1.5rem;
+}
+
+.logout-box .logout-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* Остаться / Выйти — одинаковый фон и обводка (как у .auth-button формы) */
+.logout-box .cancel-button {
+  background-color: rgba(81, 169, 255, 0.3);
+  border: 1px solid rgba(81, 169, 255, 0.5);
+}
+
+.logout-box .cancel-button:hover {
+  background-color: rgba(81, 169, 255, 0.5);
+  box-shadow: 0 0 15px rgba(81, 169, 255, 0.4);
+}
+
+/* ===== Адаптив ===== */
+
+@media (max-width: 991px) {
+  .home-topics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* На узкой ширине убираем min 50% у «Тема», иначе не помещаются фикс-колонки */
+  .topic-list-header,
+  .topic-item,
+  .theme-list-header,
+  .theme-item,
+  .theme-header {
+    grid-template-columns: minmax(0, 3fr) 11rem 5rem minmax(12rem, 2fr);
+  }
+}
+
+@media (max-width: 767px) {
+  .home-section-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .home-section-stats {
+    justify-content: flex-start;
+  }
+
+  .static-page-box {
+    padding: 1.25rem;
+  }
+
+  .account-center-page {
+    min-height: auto;
+  }
+
+  /* В списке тем заголовок режется, дата и просмотры остаются в одной строке с названием */
+  .topic-list .topic-info-row {
+    flex-wrap: nowrap;
+  }
+
+  .topic-list .topic-info-row .topic-meta {
+    margin-left: auto;
+    width: auto;
+  }
+}
+
+/* Форум: антиспам honeypot, бейджи в шапке */
+.hp-field {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.nav-badge {
+  display: inline-block;
+  min-width: 1.1rem;
+  padding: 0 4px;
+  margin-left: 2px;
+  font-size: 0.7rem;
+  line-height: 1.2;
+  background: #c0392b;
+  color: #fff;
+  border-radius: 8px;
+  vertical-align: super;
+}
+
+.topic-actions-wrap a,
+.topic-actions-wrap form {
+  margin-right: 0.35rem;
+}
+
+.topic-actions-wrap .topic-button,
+.topic-actions-wrap .cancel-button {
+  display: inline-block;
+  margin-bottom: 0.25rem;
+}
+
+/* Страницы списков: уведомления, ЛС, жалобы — заголовок по центру, пустое состояние */
+.forum-list-page__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+.forum-list-page__title {
+  margin: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 1.35rem;
+}
+
+.forum-list-page__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.forum-empty-state {
+  min-height: min(50vh, 320px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem 1rem;
+  margin-top: 0.5rem;
+  color: rgba(255, 255, 255, 0.65);
+  background: rgba(30, 30, 55, 0.35);
+  border: 1px dashed rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+}

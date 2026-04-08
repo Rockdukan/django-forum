@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Теги — Форум{% endblock %}
+{% block forum_content %}
+<div class="breadcrumb-container">
+    <ul class="breadcrumb-list">
+        <li class="breadcrumb-item">
+            <a href="{% url 'forum:index' %}" class="breadcrumb-link">Главная</a>
+            <span class="breadcrumb-divider" aria-hidden="true"><i class="fas fa-angle-right"></i></span>
+        </li>
+        <li class="breadcrumb-item">
+            <span class="breadcrumb-current">Теги</span>
+        </li>
+    </ul>
+</div>
+<div class="static-page-box tag-cloud-page">
+    <h1 class="container-title"><i class="fas fa-tags"></i> Облако тегов</h1>
+    <p class="tag-cloud-lead">Теги с числом тем. Нажмите на тег, чтобы открыть список тем.</p>
+    <div class="topic-tags topic-tags--page">
+        {% for t in tags %}
+        <a href="{{ t.get_absolute_url }}" class="tag">{{ t.name }} <small>({{ t.topic_count }})</small></a>
+        {% empty %}
+        <p class="form-help tag-cloud-empty">Тегов пока нет — добавьте их при создании темы.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

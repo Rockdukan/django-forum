@@ -1,0 +1,345 @@
+{% extends "base.html" %}
+{% load forum_tags %}
+
+{% block title %}{{ topic.title }} — {{ forum_site_name|default:"Форум" }}{% endblock %}
+{% block extra_head %}
+{{ block.super }}
+<meta name="description" content="{{ meta_description|default:topic.title|escape }}">
+<meta property="og:title" content="{{ topic.title|escape }}">
+<meta property="og:description" content="{{ meta_description|default:topic.title|truncatechars:200|escape }}">
+{% endblock %}
+
+{% block forum_content %}
+<div class="breadcrumb-container">
+    <ul class="breadcrumb-list">
+        <li class="breadcrumb-item">
+            <a href="{% url 'forum:index' %}" class="breadcrumb-link">Главная</a>
+            <span class="breadcrumb-divider"><i class="fas fa-angle-right"></i></span>
+        </li>
+        {% for c in category.get_ancestors %}
+        <li class="breadcrumb-item">
+            <a href="{% url 'forum:category_detail' slug=c.slug %}" class="breadcrumb-link">{{ c.name }}</a>
+            <span class="breadcrumb-divider"><i class="fas fa-angle-right"></i></span>
+        </li>
+        {% endfor %}
+        <li class="breadcrumb-item">
+            <span class="breadcrumb-current" aria-current="page">{{ topic.title }}</span>
+        </li>
+    </ul>
+</div>
+
+<div class="topic-detail-container">
+    <div class="topic-header">
+        <div class="topic-status">
+            {% if topic.is_sticky %}<span class="status-badge sticky"><i class="fas fa-thumbtack"></i> Закреплено</span>{% endif %}
+            {% if topic.is_closed %}<span class="status-badge closed"><i class="fas fa-lock"></i> Закрыто</span>{% endif %}
+            {% if topic.is_removed %}<span class="status-badge closed">Удалена (мод. просмотр)</span>{% endif %}
+        </div>
+        <h1 class="topic-title">{{ topic.title }}</h1>
+        {% if poll %}<p class="topic-poll-badge" style="margin:0.25rem 0 0 0;font-size:0.95rem;opacity:0.9;"><i class="fas fa-poll"></i> В теме есть опрос</p>{% endif %}
+        {% if topic.tags.all %}
+        <div class="topic-tags" style="margin:0.5rem 0;">
+            {% for t in topic.tags.all %}
+            <a href="{{ t.get_absolute_url }}" class="tag" style="margin-right:0.35rem;">{{ t.name }}</a>
+            {% endfor %}
+        </div>
+        {% endif %}
+        <div class="topic-meta">
+            <div class="topic-info">
+                <span class="topic-author">Автор: <a href="{% url 'forum:user_profile' username=topic.author.username %}">{{ topic.author.username }}</a> <span title="Репутация">(<i class="fas fa-star"></i>{{ topic.author.karma }})</span></span>
+                <span class="topic-date">Создано: {{ topic.created_at|friendly_date }}</span>
+                <span class="topic-views"><i class="fas fa-eye"></i> {{ topic.views }}</span>
+                <span class="topic-replies"><i class="fas fa-comment"></i> {{ topic.get_reply_count }}</span>
+            </div>
+            <div class="topic-actions topic-actions-wrap">
+                {% if user.is_authenticated %}
+                    {% if can_reply %}<a href="#post-form" class="topic-button"><i class="fas fa-reply"></i> Ответить</a>{% endif %}
+                    {% if subscribed %}
+                        <form method="post" action="{% url 'forum:topic_unsubscribe' category_slug=category.slug topic_slug=topic.slug %}" style="display:inline;">
+                            {% csrf_token %}<button type="submit" class="topic-button">Отписаться</button>
+                        </form>
+                    {% else %}
+                        <form method="post" action="{% url 'forum:topic_subscribe' category_slug=category.slug topic_slug=topic.slug %}" style="display:inline;">
+                            {% csrf_token %}<button type="submit" class="topic-button">Подписаться</button>
+                        </form>
+                    {% endif %}
+                    {% if bookmarked %}
+                        <form method="post" action="{% url 'forum:topic_bookmark_toggle' category_slug=category.slug topic_slug=topic.slug %}" style="display:inline;">
+                            {% csrf_token %}<button type="submit" class="topic-button">Убрать из закладок</button>
+                        </form>
+                    {% else %}
+                        <form method="post" action="{% url 'forum:topic_bookmark_toggle' category_slug=category.slug topic_slug=topic.slug %}" style="display:inline;">
+                            {% csrf_token %}<button type="submit" class="topic-button">В закладки</button>
+                        </form>
+                    {% endif %}
+                    {% if can_edit_topic %}
+                        <a href="{% url 'forum:edit_topic' category_slug=category.slug topic_slug=topic.slug %}" class="topic-button">Править тему</a>
+                        <a href="{% url 'forum:delete_topic' category_slug=category.slug topic_slug=topic.slug %}" class="cancel-button">Удалить тему</a>
+                    {% endif %}
+                    <a href="{% url 'forum:topic_revisions' category_slug=category.slug topic_slug=topic.slug %}" class="topic-button">История темы</a>
+                    <a href="{% url 'forum:report_topic' category_slug=category.slug topic_slug=topic.slug %}" class="cancel-button">Жалоба</a>
+                {% else %}
+                    <span class="form-help" style="opacity:0.9;">
+                        <a href="{% url 'account_login' %}">Войдите</a>, чтобы подписаться на ответы в теме.
+                    </span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    {% if can_moderate %}
+    <div class="mod-toolbar" style="background:#2c3e50;color:#fff;padding:0.75rem 1rem;margin-bottom:1rem;border-radius:4px;">
+        <strong>Модерация:</strong>
+        <form method="post" action="{% url 'forum:mod_toggle_sticky' category_slug=category.slug topic_slug=topic.slug %}" style="display:inline;margin-left:0.5rem;">
+            {% csrf_token %}<button type="submit" class="topic-button" style="padding:0.2rem 0.5rem;">Закрепить/снять</button>
+        </form>
+        <form method="post" action="{% url 'forum:mod_toggle_closed' category_slug=category.slug topic_slug=topic.slug %}" style="display:inline;margin-left:0.5rem;">
+            {% csrf_token %}<button type="submit" class="topic-button" style="padding:0.2rem 0.5rem;">Закрыть/открыть</button>
+        </form>
+        <a href="{% url 'forum:mod_move_topic' category_slug=category.slug topic_slug=topic.slug %}" style="color:#7dceff;margin-left:0.5rem;">Перенести</a>
+    </div>
+    {% endif %}
+
+    {% if poll and poll_results %}
+    <div class="forum-poll-block" style="margin-bottom:1.25rem;padding:1rem 1.25rem;border:1px solid rgba(255,255,255,0.15);border-radius:8px;background:rgba(0,0,0,0.15);">
+        <h3 class="forum-poll-title" style="margin-top:0;">{{ poll.question }}</h3>
+        {% if poll_vote or topic.is_closed or not user.is_authenticated %}
+            <p class="form-help" style="margin-bottom:0.75rem;">Результаты</p>
+            <ul style="list-style:none;padding:0;margin:0;">
+            {% for opt in poll_results %}
+                <li style="margin:0.35rem 0;">{{ opt.text }} — <strong>{{ opt.vote_count }}</strong></li>
+            {% endfor %}
+            </ul>
+        {% elif poll_vote_form %}
+            <form method="post" action="{% url 'forum:poll_vote' category_slug=category.slug topic_slug=topic.slug %}" class="forum-poll-form">
+                {% csrf_token %}
+                <div class="form-group">{{ poll_vote_form.option }}</div>
+                <button type="submit" class="topic-button">Голосовать</button>
+            </form>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <div class="posts-container">
+        {% for post in page_obj %}
+            <div class="post {% if forloop.first %}original-post{% endif %} {% if post.is_hidden %}post-hidden-mod{% endif %}" id="post-{{ post.id }}">
+                <div class="post-sidebar">
+                    <div class="post-author">
+                        <div class="user-avatar">
+                            {% if post.author.avatar %}
+                                <img src="{{ post.author.avatar.url }}" alt="{{ post.author.username }}" class="avatar-img">
+                            {% else %}
+                                <div class="avatar-default">{{ post.author.username|first }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="user-info">
+                            <a href="{% url 'forum:user_profile' username=post.author.username %}" class="user-name">{{ post.author.username }}</a>
+                            <span class="user-role {{ post.author.role }}">{{ post.author|get_user_role_display }}</span>
+                            <div class="user-stats">
+                                <span class="stat-item"><i class="fas fa-star"></i> {{ post.author.karma }}</span>
+                                <span class="stat-item"><i class="fas fa-comment"></i> {{ post.author.posts.count }}</span>
+                                <span class="stat-item"><i class="fas fa-calendar"></i> {{ post.author.date_joined|date:"d.m.Y" }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="post-content-wrapper">
+                    <div class="post-header">
+                        <div class="post-info">
+                            <a href="#post-{{ post.id }}" class="post-link">
+                                <span class="post-number">#{{ forloop.counter }}</span>
+                                <span class="post-time">{{ post.created_at|friendly_date }}</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    {% if post.is_hidden %}
+                    <div class="post-hidden-banner" style="background:#fff3cd;padding:0.5rem;margin-bottom:0.5rem;">
+                        Скрыто модератором{% if post.hidden_reason %}: {{ post.hidden_reason }}{% endif %}
+                        {% if can_moderate %}
+                        — <form method="post" action="{% url 'forum:mod_unhide_post' post_id=post.id %}" style="display:inline;">
+                            {% csrf_token %}<button type="submit" class="cancel-button" style="padding:0;">показать снова</button>
+                        </form>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+
+                    <div class="post-content">
+                        {{ post.content|markdown|safe }}
+                    </div>
+
+                    {% if post.attachments.all %}
+                    <div class="post-attachments" style="margin-top:0.5rem;">
+                        <strong>Вложения:</strong>
+                        <ul>
+                            {% for a in post.attachments.all %}
+                            <li><a href="{{ a.file.url }}" download="{{ a.original_name }}">{{ a.original_name }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+
+                    {% if post.updated_at > post.created_at %}
+                        <div class="post-edited">
+                            <em>Изменено: {{ post.updated_at|friendly_date }}</em>
+                            <a href="{% url 'forum:post_revisions' post_id=post.id %}">история</a>
+                        </div>
+                    {% endif %}
+
+                    <div class="post-footer">
+                        <div class="post-actions post-actions-wrap">
+                            <a href="javascript:void(0);" onclick="quotePost('{{ post.id }}', '{{ post.author.username }}')"><i class="fas fa-quote-left"></i> Цитировать</a>
+                            <a href="#post-form" onclick="replyToUser('{{ post.author.username }}')"><i class="fas fa-reply"></i> Ответить</a>
+                            {% if user.is_authenticated %}
+                                {% if user == post.author or can_moderate %}
+                                <a href="{% url 'forum:edit_post' post_id=post.id %}">Править</a>
+                                <a href="{% url 'forum:delete_post' post_id=post.id %}">Удалить</a>
+                                {% endif %}
+                                <a href="{% url 'forum:report_post' post_id=post.id %}">Жалоба</a>
+                                {% if can_moderate and not post.is_hidden %}
+                                <a href="{% url 'forum:mod_hide_post' post_id=post.id %}">Скрыть</a>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                        <div class="post-likes">
+                            {% if user.is_authenticated %}
+                                <a href="javascript:void(0);" class="like-button" data-post-id="{{ post.id }}" onclick="likePost({{ post.id }})">
+                                    <i class="fas fa-thumbs-up {% if user in post.liked_by.all %}liked{% endif %}"></i>
+                                </a>
+                            {% endif %}
+                            <div class="like-count" id="like-count-{{ post.id }}">
+                                <i class="fas fa-thumbs-up"></i> {{ post.liked_by.count }}
+                            </div>
+                        </div>
+                    </div>
+
+                    {% if post.author.signature %}
+                        <div class="post-signature">{{ post.author.signature|markdown|safe }}</div>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    {% if page_obj.paginator.num_pages > 1 %}
+        <div class="pagination-container">
+            <div class="pagination">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1" class="pagination-item"><i class="fas fa-angle-double-left"></i></a>
+                    <a href="?page={{ page_obj.previous_page_number }}" class="pagination-item"><i class="fas fa-angle-left"></i></a>
+                {% endif %}
+                {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                        <a href="#" class="pagination-item active">{{ num }}</a>
+                    {% elif num > page_obj.number|add:"-3" and num < page_obj.number|add:"3" %}
+                        <a href="?page={{ num }}" class="pagination-item">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}" class="pagination-item"><i class="fas fa-angle-right"></i></a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}" class="pagination-item"><i class="fas fa-angle-double-right"></i></a>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+
+    {% if user.is_authenticated and can_reply and form %}
+        <div class="reply-box" id="post-form">
+            <h3 class="reply-title">Ответить в тему</h3>
+            <form method="post" action="{% url 'forum:create_post' category_slug=category.slug topic_slug=topic.slug %}" class="reply-form" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" name="reply_page" value="{{ page_obj.number }}">
+                {% if form.non_field_errors %}<div class="form-error">{{ form.non_field_errors }}</div>{% endif %}
+                <div class="editor-toolbar">
+                    <button type="button" class="editor-button" title="Жирный" onclick="insertTagR('**', '**')"><i class="fas fa-bold"></i></button>
+                    <button type="button" class="editor-button" title="Изображение (URL)" onclick="insertTagR('![alt](', ')')"><i class="fas fa-image"></i></button>
+                    <button type="button" class="editor-button" title="Код" onclick="insertTagR('\n```\n', '\n```')"><i class="fas fa-code"></i></button>
+                </div>
+                {{ form.content }}
+                {{ form.content.errors }}
+                {% if form.captcha %}
+                <div class="form-group">
+                    {{ form.captcha.label_tag }}{{ form.captcha }}
+                    {% if form.captcha.errors %}<div class="form-error" role="alert">{{ form.captcha.errors }}</div>{% endif %}
+                </div>
+                {% endif %}
+                <div class="form-group hp-field" style="position:absolute;left:-2000px;">{{ form.website.label_tag }}{{ form.website }}</div>
+                <div class="form-group">
+                    <label>Вложения</label>
+                    <input type="file" name="attachments" multiple class="auth-input">
+                    <span class="form-help">Можно несколько файлов (см. ограничения в правилах).</span>
+                </div>
+                <div class="reply-actions">
+                    <button type="submit" class="submit-button"><i class="fas fa-paper-plane"></i> Отправить</button>
+                </div>
+            </form>
+        </div>
+    {% elif topic.is_closed and user.is_authenticated and not can_reply %}
+        <div class="topic-closed-message">
+            <i class="fas fa-lock"></i>
+            <p>Тема закрыта. Новые сообщения могут писать только модераторы.</p>
+        </div>
+    {% elif not user.is_authenticated %}
+        <div class="login-to-reply">
+            <p>Для участия в обсуждении нужно <a href="{% url 'account_login' %}">войти</a> или <a href="{% url 'forum:register' %}">зарегистрироваться</a>.</p>
+        </div>
+    {% endif %}
+</div>
+
+<script>
+    function quotePost(postId, username) {
+        const postContent = document.querySelector(`#post-${postId} .post-content`).textContent.trim();
+        const quoteText = `> **${username} написал(а):**\n> ${postContent}\n\n`;
+        const replyTextarea = document.getElementById('reply-content');
+        if (!replyTextarea) return;
+        replyTextarea.value += quoteText;
+        replyTextarea.focus();
+        replyTextarea.scrollIntoView({ behavior: 'smooth' });
+    }
+    function replyToUser(username) {
+        const replyTextarea = document.getElementById('reply-content');
+        if (!replyTextarea) return;
+        replyTextarea.value += `@${username}, `;
+        replyTextarea.focus();
+        replyTextarea.scrollIntoView({ behavior: 'smooth' });
+    }
+    function insertTagR(openTag, closeTag) {
+        const textarea = document.getElementById('reply-content');
+        if (!textarea) return;
+        const start = textarea.selectionStart, end = textarea.selectionEnd;
+        const selectedText = textarea.value.substring(start, end);
+        const newText = openTag + selectedText + closeTag;
+        textarea.value = textarea.value.substring(0, start) + newText + textarea.value.substring(end);
+        const newCursorPos = start + newText.length;
+        textarea.focus();
+        textarea.setSelectionRange(newCursorPos, newCursorPos);
+    }
+    function likePost(postId) {
+        fetch(`/ajax/like-post/${postId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'Content-Type': 'application/json'
+            },
+            credentials: 'same-origin'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                const el = document.querySelector(`#like-count-${postId}`);
+                if (el) el.innerHTML = '<i class="fas fa-thumbs-up"></i> ' + data.likeCount;
+                const likeButton = document.querySelector(`.like-button[data-post-id="${postId}"] i`);
+                if (likeButton) {
+                    if (data.liked) likeButton.classList.add('liked');
+                    else likeButton.classList.remove('liked');
+                }
+            }
+        })
+        .catch(console.error);
+    }
+    {% if reply_submit_failed %}
+    document.getElementById('post-form')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    {% endif %}
+</script>
+{% endblock %}

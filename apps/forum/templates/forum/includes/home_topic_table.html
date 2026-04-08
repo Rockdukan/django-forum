@@ -1,0 +1,74 @@
+{% load forum_tags %}
+<div class="topic-list topic-list--home">
+    <div class="topic-list-header">
+        <div class="header-topic">Тема · раздел</div>
+        <div class="header-author">Автор · реп.</div>
+        <div class="header-stats">Ответы</div>
+        <div class="header-last-post">Последнее сообщение</div>
+    </div>
+
+    {% for topic in topics %}
+        <div class="topic-item">
+            <div class="topic-main">
+                <div class="topic-icon {% if topic.is_sticky %}sticky{% elif topic.is_closed %}closed{% endif %}">
+                    {% if topic.is_sticky %}
+                        <i class="fas fa-thumbtack"></i>
+                    {% elif topic.is_closed %}
+                        <i class="fas fa-lock"></i>
+                    {% else %}
+                        <i class="fas fa-comment-alt"></i>
+                    {% endif %}
+                </div>
+
+                <div class="topic-info topic-info-row">
+                    <a href="{{ topic.get_absolute_url }}" class="topic-title-link">{{ topic.title }}</a>
+                    <div class="topic-meta">
+                        <span class="topic-date">{{ topic.created_at|friendly_date }}</span>
+                        <span class="topic-views"><i class="fas fa-eye"></i> {{ topic.views }}</span>
+                        <a href="{{ topic.category.get_absolute_url }}" class="tag" style="margin-left:0.35rem;">{{ topic.category.name }}</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="topic-author-info">
+                <a href="{% url 'forum:user_profile' username=topic.author.username %}" class="author-link">
+                    {{ topic.author.username }}
+                </a>
+                <div class="author-karma-line" style="font-size:0.85rem;opacity:0.9;" title="Репутация">
+                    <i class="fas fa-star"></i> {{ topic.author.karma }}
+                </div>
+            </div>
+
+            <div class="topic-stats">
+                <div class="stats-number">{{ topic.get_reply_count }}</div>
+            </div>
+
+            <div class="topic-last-post">
+                {% with last_post=topic.get_last_post %}
+                    {% if last_post %}
+                        <div class="last-post-info">
+                            <a href="{% url 'forum:user_profile' username=last_post.author.username %}" class="last-author">
+                                {{ last_post.author.username }}
+                            </a>
+                            <div class="last-date">
+                                {{ last_post.created_at|friendly_date }}
+                            </div>
+                            <a href="{{ last_post.get_absolute_url }}" class="last-link">
+                                <i class="fas fa-angle-double-right"></i>
+                            </a>
+                        </div>
+                    {% else %}
+                        <div class="no-replies">Нет ответов</div>
+                    {% endif %}
+                {% endwith %}
+            </div>
+        </div>
+    {% empty %}
+        <div class="empty-topic-list">
+            <div class="empty-block">
+                <i class="fas fa-comment-slash empty-icon"></i>
+                <p>{{ empty_message }}</p>
+            </div>
+        </div>
+    {% endfor %}
+</div>

@@ -1,0 +1,72 @@
+/*
+ * Lucus: у body класс change-list-page, а в lucus-admin.css правила date_hierarchy висят на .change-list — не применяются.
+ * Без flex/gap ссылки «‹ 2026» и дней слипаются в одну строку и визуально путаются с таблицей.
+ */
+.change-list-page .lucus-changelist__date-hierarchy .toplinks,
+.change-list-page #changelist .toplinks {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.2rem 0.85rem;
+  margin: 0 0 0.75rem;
+  padding: 0 0 0.5rem;
+  border-bottom: 1px solid var(--hairline-color, #e0e0e0);
+  font-weight: 600;
+}
+
+.change-list-page .lucus-changelist__date-hierarchy .toplinks a,
+.change-list-page #changelist .toplinks a {
+  font-size: 0.8125rem;
+  white-space: nowrap;
+}
+
+.change-list-page .lucus-changelist__date-hierarchy .toplinks .date-back,
+.change-list-page #changelist .toplinks .date-back {
+  color: var(--body-quiet-color, #666);
+}
+
+/*
+ * Мультисортировка: в <th> Django выводит <span class="sortpriority">1|2|…</span> (порядок полей).
+ * В шапке это выглядит как «левые цифры в колонках» рядом с «Дата создания» и т.д.
+ */
+.change-list-page #changelist table#result_list thead th .sortpriority,
+.change-list-page #result_list thead th .sortpriority {
+  display: none !important;
+}
+
+/*
+ * list_editable Boolean (Закреплено / Закрыто): Lucus задаёт
+ * #changelist .results table input { vertical-align: baseline } — съезжает относительно текста в соседних ячейках.
+ */
+.change-list-page #changelist .results table#result_list thead th {
+  vertical-align: middle !important;
+}
+
+.change-list-page #changelist .results table#result_list thead th.column-is_sticky .text,
+.change-list-page #changelist .results table#result_list thead th.column-is_closed .text {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  min-height: 2.75rem;
+  box-sizing: border-box;
+}
+
+.change-list-page #changelist .results table#result_list tbody td.field-is_sticky,
+.change-list-page #changelist .results table#result_list tbody td.field-is_closed {
+  vertical-align: middle !important;
+  text-align: center !important;
+}
+
+.change-list-page #changelist .results table#result_list tbody td.field-is_sticky input[type="checkbox"],
+.change-list-page #changelist .results table#result_list tbody td.field-is_closed input[type="checkbox"] {
+  display: block !important;
+  margin: 0 auto !important;
+  vertical-align: middle !important;
+}
+
+/* Перебить lucus-admin: baseline у всех input в таблице changelist */
+.change-list-page #changelist .results table#result_list tbody td.field-is_sticky input,
+.change-list-page #changelist .results table#result_list tbody td.field-is_closed input {
+  vertical-align: middle !important;
+}

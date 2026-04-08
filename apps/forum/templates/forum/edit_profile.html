@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% load forum_tags %}
+
+{% block title %}Редактирование профиля - Форум{% endblock %}
+
+{% block forum_content %}
+<div class="breadcrumb-container">
+    <ul class="breadcrumb-list">
+        <li class="breadcrumb-item">
+            <a href="{% url 'forum:index' %}" class="breadcrumb-link">Главная</a>
+            <span class="breadcrumb-divider"><i class="fas fa-angle-right"></i></span>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="{% url 'forum:user_profile' username=user.username %}" class="breadcrumb-link">
+                Профиль пользователя {{ user.username }}
+            </a>
+            <span class="breadcrumb-divider"><i class="fas fa-angle-right"></i></span>
+        </li>
+        <li class="breadcrumb-item">
+            <span class="breadcrumb-current">Редактирование профиля</span>
+        </li>
+    </ul>
+</div>
+
+<div class="edit-profile-container">
+    <div class="auth-box">
+        <div class="auth-header">
+            <h2 class="auth-title">Редактирование профиля</h2>
+            <div class="auth-subtitle">Обновите информацию о себе</div>
+        </div>
+
+        <div class="auth-content">
+            <form method="post" action="{% url 'forum:edit_profile' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="auth-form-group">
+                    <label for="{{ form.email.id_for_label }}" class="auth-label">Email</label>
+                    {{ form.email }}
+                    {% if form.email.errors %}
+                        <div class="form-error">{{ form.email.errors }}</div>
+                    {% endif %}
+                    <div class="auth-help">Используется для входа и восстановления доступа</div>
+                    <div class="auth-help">
+                        <a href="{% url 'account_email' %}" class="email-management-link">
+                            <i class="fas fa-envelope"></i> Управление email и подтверждение (django-allauth)
+                        </a>
+                    </div>
+                </div>
+
+                <div class="auth-form-group">
+                    <label for="{{ form.avatar.id_for_label }}" class="auth-label">Аватар</label>
+                    <div class="current-avatar">
+                        {% if user.avatar %}
+                            <img src="{{ user.avatar.url }}" alt="{{ user.username }}" class="avatar-preview">
+                        {% else %}
+                            <div class="avatar-default avatar-preview">{{ user.username|first }}</div>
+                        {% endif %}
+                    </div>
+                    {{ form.avatar }}
+                    {% if form.avatar.errors %}
+                        <div class="form-error">{{ form.avatar.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="auth-form-group">
+                    <label for="{{ form.signature.id_for_label }}" class="auth-label">Подпись</label>
+                    {{ form.signature }}
+                    {% if form.signature.errors %}
+                        <div class="form-error">{{ form.signature.errors }}</div>
+                    {% endif %}
+                    <div class="auth-help">Ваша подпись будет отображаться под вашими сообщениями. Можно использовать Markdown-форматирование.</div>
+                </div>
+
+                <fieldset class="auth-form-group" style="border:1px solid rgba(255,255,255,0.2);padding:1rem;border-radius:8px;">
+                    <legend class="auth-label">Уведомления на email</legend>
+                    <label class="form-checkbox">{{ form.notify_email_reply }} {{ form.notify_email_reply.label }}</label>
+                    <label class="form-checkbox">{{ form.notify_email_mention }} {{ form.notify_email_mention.label }}</label>
+                    <label class="form-checkbox">{{ form.notify_email_pm }} {{ form.notify_email_pm.label }}</label>
+                    <label class="form-checkbox">{{ form.notify_email_moderation }} {{ form.notify_email_moderation.label }}</label>
+                </fieldset>
+
+                <div class="auth-form-group">
+                    <a href="{% url 'forum:bookmarks_list' %}" class="change-password-link"><i class="fas fa-bookmark"></i> Мои закладки</a>
+                    ·
+                    <a href="{% url 'forum:manage_ignored_users' %}" class="change-password-link"><i class="fas fa-user-slash"></i> Игнор-лист</a>
+                    ·
+                    <a href="{% url 'account_change_password' %}" class="change-password-link">
+                        <i class="fas fa-key"></i> Сменить пароль
+                    </a>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="auth-button">
+                        <i class="fas fa-save"></i> Сохранить изменения
+                    </button>
+                    <a href="{% url 'forum:user_profile' username=user.username %}" class="cancel-button">
+                        <i class="fas fa-times"></i> Отмена
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

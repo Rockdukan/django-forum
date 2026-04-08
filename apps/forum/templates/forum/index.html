@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% load forum_tags %}
+{% block title %}Главная — Форум{% endblock %}
+
+{% block forum_content %}
+<!----------------------------- Home layout ------------------------------->
+<div class="home-page-layout">
+<!--------------------------- Forum sections ------------------------------>
+    <section class="home-block" id="forum-sections">
+        <h2 class="container-title"><i class="fas fa-layer-group"></i> Разделы форума</h2>
+        <nav class="home-toolbar" aria-label="Лента и быстрые ссылки">
+            <a href="/feeds/latest/" class="home-toolbar__link home-toolbar__link--rss"><i class="fas fa-rss" aria-hidden="true"></i> RSS</a>
+            <span class="home-toolbar__sep" aria-hidden="true">·</span>
+            <a href="/feeds/latest.atom/" class="home-toolbar__link home-toolbar__link--atom"><i class="fas fa-broadcast-tower" aria-hidden="true"></i> Atom</a>
+            {% if user.is_authenticated %}
+            <span class="home-toolbar__sep" aria-hidden="true">·</span>
+            <a href="{% url 'forum:bookmarks_list' %}" class="home-toolbar__link"><i class="fas fa-bookmark" aria-hidden="true"></i> Закладки</a>
+            <span class="home-toolbar__sep" aria-hidden="true">·</span>
+            <a href="{% url 'forum:manage_ignored_users' %}" class="home-toolbar__link"><i class="fas fa-user-slash" aria-hidden="true"></i> Игнор-лист</a>
+            {% endif %}
+        </nav>
+        <p class="form-help" style="margin:0 0 0.75rem 0;max-width:52rem;">
+            Поддерживаются вложенные разделы на главной и в списке тем; при создании темы можно добавить опрос. Репутация отображается в списках и в теме; закладки и игнор — без рассылки уведомлений по закладкам.
+        </p>
+
+        <div class="home-sections-list">
+            {% for category in categories %}
+                <div class="home-section-item" style="display:block;">
+                <a href="{{ category.get_absolute_url }}" style="text-decoration:none;color:inherit;">
+                    <h3 class="home-section-title">{{ category.name }}</h3>
+
+                    <div class="home-section-stats">
+                        <span class="stat-item">
+                            <i class="fas fa-comment-alt"></i>
+                            Тем: {{ category.get_topic_count }}
+                        </span>
+                        <span class="stat-item">
+                            <i class="fas fa-comments"></i>
+                            Сообщений: {{ category.get_post_count }}
+                        </span>
+                    </div>
+                </a>
+                {% for child in category.children.all %}
+                <div style="margin:0.5rem 0 0 1rem;">
+                    <a href="{{ child.get_absolute_url }}" class="home-section-title" style="font-size:1rem;">{{ child.name }}</a>
+                    <span class="stat-item" style="margin-left:0.5rem;"><i class="fas fa-comment-alt"></i> {{ child.get_topic_count }}</span>
+                </div>
+                {% endfor %}
+                </div>
+            {% empty %}
+                <div class="empty-block">
+                    <i class="fas fa-folder-open empty-icon"></i>
+                    <p>Нет доступных категорий форума.</p>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+<!------------------------ Popular topics block --------------------------->
+    <section class="home-block" id="popular-topics">
+        <h2 class="container-title"><i class="fas fa-fire"></i> Популярное</h2>
+
+        {% include "forum/includes/home_topic_table.html" with topics=popular_topics empty_message="Нет тем для отображения." %}
+    </section>
+<!-------------------------- Recent topics block -------------------------->
+    <section class="home-block" id="new-topics">
+        <h2 class="container-title"><i class="fas fa-clock"></i> Последние темы</h2>
+
+        {% include "forum/includes/home_topic_table.html" with topics=recent_topics empty_message="Нет тем для отображения." %}
+    </section>
+<!--------------------------- Tag cloud preview ---------------------------->
+    <section class="home-block" id="tag-cloud-preview">
+        <h2 class="container-title"><i class="fas fa-tags"></i> Популярные теги</h2>
+        <p class="home-tag-cloud__actions">
+            <a href="{% url 'forum:tag_cloud' %}" class="home-toolbar__link"><i class="fas fa-list" aria-hidden="true"></i> Все теги</a>
+        </p>
+        <div class="topic-tags">
+            {% for t in popular_tags %}
+            <a href="{{ t.get_absolute_url }}" class="tag">{{ t.name }} <small>({{ t.topic_count }})</small></a>
+            {% empty %}
+            <p class="form-help home-tag-cloud__empty">Пока нет популярных тегов — откройте <a href="{% url 'forum:tag_cloud' %}">полный список тегов</a>.</p>
+            {% endfor %}
+        </div>
+    </section>
+<!----------------------------- Forum stats -------------------------------->
+    <div class="forum-stats">
+        <div class="row stats-row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-12">
+                <div class="stat-card">
+                    <i class="fas fa-users stat-icon"></i>
+                    <div class="stat-content">
+                        <h4>Пользователей</h4>
+                        <p class="stat-number">{{ user_count|default:"0" }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-4 col-sm-4 col-12">
+                <div class="stat-card">
+                    <i class="fas fa-comment-alt stat-icon"></i>
+                    <div class="stat-content">
+                        <h4>Тем</h4>
+                        <p class="stat-number">{{ forum_topic_count|default:"0" }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-4 col-sm-4 col-12">
+                <div class="stat-card">
+                    <i class="fas fa-comments stat-icon"></i>
+                    <div class="stat-content">
+                        <h4>Сообщений</h4>
+                        <p class="stat-number">{{ forum_post_count|default:"0" }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--------------------------- END Home layout ----------------------------->
+{% endblock %}

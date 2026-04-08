@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load forum_tags %}
+{% block title %}Жалобы{% endblock %}
+{% block forum_content %}
+<div class="topic-detail-container forum-list-page mod-reports-page">
+  <div class="forum-list-page__header">
+    <h1 class="forum-list-page__title">Очередь жалоб</h1>
+  </div>
+  {% if reports %}
+  <div class="mod-reports-list">
+    {% for r in reports %}
+    <article class="dm-message mod-report-card">
+      <header class="dm-message-header">
+        <span class="dm-message-author">Жалоба #{{ r.id }} · {{ r.reporter.username }}</span>
+        <time class="dm-message-time" datetime="{{ r.created_at|date:'c' }}">{{ r.created_at|friendly_date }}</time>
+      </header>
+      <div class="dm-message-body">{{ r.reason|linebreaksbr }}</div>
+      <div class="mod-report-meta">
+        {% if r.topic %}
+        <span class="mod-report-meta__item">Тема: <a href="{{ r.topic.get_absolute_url }}">{{ r.topic.title }}</a></span>
+        {% endif %}
+        {% if r.post %}
+        <span class="mod-report-meta__item">Сообщение: <a href="{{ r.post.get_absolute_url }}">#{{ r.post.id }}</a></span>
+        {% endif %}
+        {% if r.reported_user %}
+        <span class="mod-report-meta__item">На пользователя: <a href="{% url 'forum:user_profile' username=r.reported_user.username %}">{{ r.reported_user.username }}</a></span>
+        {% endif %}
+      </div>
+      <div class="mod-report-actions">
+        <form method="post" action="{% url 'forum:mod_report_resolve' report_id=r.id %}" class="mod-report-action-form">
+          {% csrf_token %}
+          <button type="submit" class="topic-button">Принять</button>
+        </form>
+        <form method="post" action="{% url 'forum:mod_report_dismiss' report_id=r.id %}" class="mod-report-action-form">
+          {% csrf_token %}
+          <button type="submit" class="cancel-button">Отклонить</button>
+        </form>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="forum-empty-state">Нет открытых жалоб.</div>
+  {% endif %}
+</div>
+{% endblock %}

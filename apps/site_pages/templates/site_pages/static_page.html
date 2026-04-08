@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}{{ page.title }}{% endblock %}
+{% block forum_content %}
+<div class="static-page-container">
+  <div class="static-page-box">
+    <h1 class="static-page-title">{{ page.title }}</h1>
+    {# html_safe: HTML после bleach на модели #}
+    <div class="static-page-content summernote-body">{{ page.html_safe }}</div>
+  </div>
+</div>
+{% endblock %}

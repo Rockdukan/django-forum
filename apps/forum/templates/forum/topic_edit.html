@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Редактирование: {{ topic.title }}{% endblock %}
+{% block forum_content %}
+<div class="create-form-container">
+  <h2>Редактировать тему</h2>
+  <form method="post" class="create-topic-form">
+    {% csrf_token %}
+    {% if form.non_field_errors %}<div class="form-error">{{ form.non_field_errors }}</div>{% endif %}
+    <div class="form-group">{{ form.title.label_tag }}{{ form.title }}{{ form.title.errors }}</div>
+    <div class="form-group">{{ form.tags.label_tag }}{{ form.tags }}{{ form.tags.errors }}</div>
+    <div class="form-group">{{ form.content.label_tag }}{{ form.content }}{{ form.content.errors }}</div>
+    <div class="form-group">{{ form.edit_reason.label_tag }}{{ form.edit_reason }}{{ form.edit_reason.errors }}</div>
+    <div class="form-group" style="display:none">{{ form.website.label_tag }}{{ form.website }}</div>
+    <button type="submit" class="submit-button">Сохранить</button>
+    <a href="{{ topic.get_absolute_url }}" class="cancel-button">Отмена</a>
+  </form>
+</div>
+{% endblock %}
