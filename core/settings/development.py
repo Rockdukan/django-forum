@@ -41,7 +41,8 @@ CORS_ALLOW_CREDENTIALS = True
 # "django.core.mail.backends.filebased.EmailBackend" - запись в файлы
 # "django.core.mail.backends.locmem.EmailBackend" - хранение в памяти
 # "django.core.mail.backends.dummy.EmailBackend" - подавление отправки
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+# Явная строка со ссылкой подтверждения (см. core.email_backends.DevConsoleEmailBackend).
+EMAIL_BACKEND = "core.email_backends.DevConsoleEmailBackend"
 
 DEFAULT_FROM_EMAIL = env.str("DEFAULT_FROM_EMAIL", default="webmaster@localhost")
 

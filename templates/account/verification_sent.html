@@ -1,0 +1,13 @@
+{% extends "account/base.html" %}
+{% load i18n %}
+
+{% block head_title %}{% trans "Verify Your Email Address" %}{% endblock %}
+
+{% block content_account %}
+<h2 class="auth-subtitle">Подтвердите email</h2>
+<p class="auth-lead">
+  Мы отправили письмо с подтверждением на ваш адрес. Перейдите по ссылке из письма, чтобы завершить регистрацию.
+</p>
+<p class="auth-footer mt-3"><a href="{% url 'account_login' %}">Войти</a></p>
+{% endblock %}
+

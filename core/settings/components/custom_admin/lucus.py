@@ -44,7 +44,6 @@ LUCUS_DASHBOARD = [
         "links": [
             {"label": "👥 Пользователи", "admin_urlname": "admin:users_user_changelist"},
             {"label": "👮 Группы", "admin_urlname": "admin:auth_group_changelist"},
-            {"label": "📧 Email адреса (allauth)", "url": "http://127.0.0.1:8000/cabinet/account/emailaddress/"},
         ],
     },
     {

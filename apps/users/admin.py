@@ -5,6 +5,23 @@ from django.utils.translation import gettext_lazy as _
 from .models import User
 
 
+try:
+    from allauth.account.models import EmailAddress
+except Exception:  # pragma: no cover
+    EmailAddress = None
+
+
+class EmailAddressInline(admin.TabularInline):
+    model = EmailAddress
+    extra = 0
+    can_delete = False
+    max_num = 1
+    verbose_name = "Email (allauth)"
+    verbose_name_plural = "Email (подтверждение)"
+    fields = ("email", "verified", "primary")
+    readonly_fields = ("email",)
+
+
 @admin.register(User)
 class UserAdmin(DjangoUserAdmin):
     list_display = (
@@ -42,3 +59,9 @@ class UserAdmin(DjangoUserAdmin):
             },
         ),
     )
+
+    def get_inlines(self, request, obj):
+        inlines = list(super().get_inlines(request, obj))
+        if EmailAddress is not None:
+            inlines.append(EmailAddressInline)
+        return inlines

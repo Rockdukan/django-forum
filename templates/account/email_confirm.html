@@ -1,0 +1,23 @@
+{% extends "account/base.html" %}
+{% load i18n allauth account %}
+
+{% block head_title %}{% trans "Confirm Email Address" %}{% endblock %}
+
+{% block content_account %}
+<h2 class="auth-subtitle">Подтверждение email</h2>
+
+{% if confirmation %}
+  {% user_display confirmation.email_address.user as user_display %}
+  <p class="auth-lead">
+    Подтвердить адрес <strong>{{ confirmation.email_address.email }}</strong> для пользователя <strong>{{ user_display }}</strong>?
+  </p>
+  <form method="post" action="{% url 'account_confirm_email' confirmation.key %}" class="auth-form">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-primary btn-block">Подтвердить</button>
+  </form>
+{% else %}
+  <p class="auth-lead">Ссылка подтверждения недействительна или устарела.</p>
+  <p class="auth-footer mt-3"><a href="{% url 'account_email' %}">Управление email</a></p>
+{% endif %}
+{% endblock %}
+

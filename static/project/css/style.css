@@ -1250,12 +1250,140 @@ body {
   color: #fff;
 }
 
+/* История правок (темы/поста) */
+.revisions-page__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.85rem;
+}
+
+.revisions-card {
+  background: rgba(30, 30, 60, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 0.9rem;
+}
+
+.revisions-card__meta {
+  padding: 0.75rem 1rem;
+  background: rgba(18, 20, 42, 0.35);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.revisions-card__meta-left {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.88rem;
+  flex-wrap: wrap;
+}
+
+.revisions-card__time {
+  color: rgba(255, 255, 255, 0.86);
+  font-weight: 700;
+}
+
+.revisions-card__sep {
+  opacity: 0.55;
+}
+
+.revisions-card__editor {
+  color: rgba(255, 255, 255, 0.86);
+  font-weight: 600;
+}
+
+.revisions-card__reason {
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 0.84rem;
+}
+
+.revisions-card__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+
+.revisions-card__col {
+  padding: 0.85rem 1rem;
+  min-width: 0;
+}
+
+.revisions-card__col + .revisions-card__col {
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.revisions-card__label {
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.7);
+  text-transform: uppercase;
+  margin-bottom: 0.35rem;
+}
+
+.revisions-card__pre {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.88);
+  background: transparent;
+  border: none;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+@media (max-width: 768px) {
+  .revisions-card__grid {
+    grid-template-columns: 1fr;
+  }
+  .revisions-card__col + .revisions-card__col {
+    border-left: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+}
+
 .post-edited {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-left: 0.25rem;
   font-size: 0.8rem;
-  color: rgba(255, 255, 255, 0.5);
-  padding: 0 1.5rem;
-  margin-top: -0.5rem;
-  margin-bottom: 0.5rem;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.post-edited__text {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.post-edited a {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 0.5rem;
+  padding: 0.12rem 0.5rem;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.92);
+  background: rgba(25, 28, 52, 0.65);
+  border: 1px solid rgba(81, 169, 255, 0.32);
+  transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+}
+
+.post-edited a:hover {
+  background: rgba(81, 169, 255, 0.18);
+  border-color: rgba(129, 200, 255, 0.55);
+  box-shadow: 0 0 10px rgba(81, 169, 255, 0.18);
+  color: #fff;
 }
 
 .post-signature {

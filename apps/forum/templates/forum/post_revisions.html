@@ -1,19 +1,57 @@
 {% extends "base.html" %}
+{% load forum_tags %}
 {% block title %}История правок сообщения{% endblock %}
 {% block forum_content %}
-<div class="topic-detail-container">
-  <h1>История правок сообщения #{{ post.id }}</h1>
-  <p><a href="{{ post.get_absolute_url }}">← К сообщению</a></p>
-  {% for r in revisions %}
-  <div class="post" style="margin-bottom:1rem;">
-    <p><strong>{{ r.created_at }}</strong> · {{ r.editor }}</p>
-    {% if r.edit_reason %}<p>Причина: {{ r.edit_reason }}</p>{% endif %}
-    <pre style="white-space:pre-wrap;font-size:0.9rem;">{{ r.old_content }}</pre>
-    <hr>
-    <pre style="white-space:pre-wrap;font-size:0.9rem;">{{ r.new_content }}</pre>
+<div class="breadcrumb-container">
+  <ul class="breadcrumb-list">
+    <li class="breadcrumb-item">
+      <a href="{% url 'forum:index' %}" class="breadcrumb-link">Главная</a>
+      <span class="breadcrumb-divider" aria-hidden="true"><i class="fas fa-angle-right"></i></span>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="{{ topic.get_absolute_url }}" class="breadcrumb-link">{{ topic.title|truncatechars:42 }}</a>
+      <span class="breadcrumb-divider" aria-hidden="true"><i class="fas fa-angle-right"></i></span>
+    </li>
+    <li class="breadcrumb-item">
+      <span class="breadcrumb-current" aria-current="page">История правок сообщения #{{ post.id }}</span>
+    </li>
+  </ul>
+</div>
+
+<div class="topic-detail-container revisions-page">
+  <div class="revisions-page__header">
+    <h1 class="container-title"><i class="fas fa-history" aria-hidden="true"></i> История правок сообщения #{{ post.id }}</h1>
+    <a href="{{ post.get_absolute_url }}" class="home-toolbar__link"><i class="fas fa-arrow-left" aria-hidden="true"></i> К сообщению</a>
   </div>
+  {% for r in revisions %}
+  <section class="revisions-card">
+    <div class="revisions-card__meta">
+      <div class="revisions-card__meta-left">
+        <time datetime="{{ r.created_at|date:'c' }}" class="revisions-card__time">{{ r.created_at|friendly_date }}</time>
+        <span class="revisions-card__sep" aria-hidden="true">·</span>
+        <span class="revisions-card__editor">{{ r.editor }}</span>
+      </div>
+      {% if r.edit_reason %}
+      <div class="revisions-card__reason">Причина: {{ r.edit_reason }}</div>
+      {% endif %}
+    </div>
+
+    <div class="revisions-card__grid">
+      <div class="revisions-card__col">
+        <div class="revisions-card__label">Было</div>
+        <pre class="revisions-card__pre">{{ r.old_content }}</pre>
+      </div>
+      <div class="revisions-card__col">
+        <div class="revisions-card__label">Стало</div>
+        <pre class="revisions-card__pre">{{ r.new_content }}</pre>
+      </div>
+    </div>
+  </section>
   {% empty %}
-  <p>Нет сохранённых версий.</p>
+  <div class="empty-block" style="margin:0;">
+    <i class="fas fa-clock-rotate-left empty-icon" aria-hidden="true"></i>
+    <p>Нет сохранённых версий.</p>
+  </div>
   {% endfor %}
 </div>
 {% endblock %}

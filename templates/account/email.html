@@ -5,31 +5,25 @@
 
 {% block content_account %}
 <h2 class="auth-subtitle">Email-адреса</h2>
-{% if user.emailaddress_set.all %}
-<p>Связанные адреса:</p>
-<form action="{% url 'account_email' %}" method="post" class="auth-form">
-    {% csrf_token %}
-    {% for emailaddress in user.emailaddress_set.all %}
-    <label class="form-group form-group--inline">
-        <input type="radio" name="email" value="{{ emailaddress.email }}" {% if emailaddress.primary %}checked{% endif %}>
-        {{ emailaddress.email }} {% if emailaddress.verified %}(подтверждён){% else %}(не подтверждён){% endif %}
-        {% if emailaddress.primary %}(основной){% endif %}
-    </label>
-    {% endfor %}
-    <button type="submit" name="action_primary" class="btn btn-outline btn-sm">Сделать основным</button>
-    <button type="submit" name="action_remove" class="btn btn-outline btn-sm">Удалить</button>
-</form>
-{% endif %}
-<h3 class="auth-subtitle mt-3">Добавить email</h3>
-<form method="post" action="{% url 'account_email' %}" class="auth-form auth-form_centered">
-    {% csrf_token %}
-    {% for field in form %}
-    <div class="form-group">
-        <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
-        {{ field }}
-    </div>
-    {% endfor %}
-    <button type="submit" name="action_add" class="btn btn-primary">Добавить</button>
-</form>
-<p class="auth-footer mt-3"><a href="{% url 'flights:app' %}">← В трекинг</a></p>
+{% with ea=user.emailaddress_set.filter(primary=True).first %}
+  {% if ea %}
+    <p class="auth-lead">
+      <strong>{{ ea.email }}</strong>
+      {% if ea.verified %}
+        <span style="opacity:0.9;">(подтверждён)</span>
+      {% else %}
+        <span style="opacity:0.9;">(не подтверждён)</span>
+      {% endif %}
+    </p>
+    {% if not ea.verified %}
+    <form action="{% url 'account_email' %}" method="post" class="auth-form">
+      {% csrf_token %}
+      <input type="hidden" name="email" value="{{ ea.email }}">
+      <button type="submit" name="action_send" class="btn btn-primary btn-block">Отправить письмо подтверждения</button>
+    </form>
+    {% endif %}
+  {% else %}
+    <p class="auth-lead">Email не задан.</p>
+  {% endif %}
+{% endwith %}
 {% endblock %}

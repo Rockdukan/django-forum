@@ -187,13 +187,6 @@
                     </section>
                     {% endif %}
 
-                    {% if post.updated_at > post.created_at %}
-                        <div class="post-edited">
-                            <em>Изменено: {{ post.updated_at|friendly_date }}</em>
-                            <a href="{% url 'forum:post_revisions' post_id=post.id %}">история</a>
-                        </div>
-                    {% endif %}
-
                     <div class="post-footer">
                         <div class="post-actions post-actions-wrap">
                             <a href="javascript:void(0);" onclick="quotePost('{{ post.id }}', '{{ post.author.username }}')"><i class="fas fa-quote-left"></i> Цитировать</a>
@@ -207,6 +200,12 @@
                                 {% if can_moderate and not post.is_hidden %}
                                 <a href="{% url 'forum:mod_hide_post' post_id=post.id %}">Скрыть</a>
                                 {% endif %}
+                            {% endif %}
+                            {% if post.updated_at > post.created_at %}
+                                <span class="post-edited">
+                                    <span class="post-edited__text">Изменено: {{ post.updated_at|friendly_date }}</span>
+                                    <a href="{% url 'forum:post_revisions' post_id=post.id %}">история</a>
+                                </span>
                             {% endif %}
                         </div>
                         <div class="post-likes" aria-label="Лайки">
