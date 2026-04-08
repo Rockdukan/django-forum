@@ -1114,13 +1114,13 @@ def dm_thread(request, thread_id):
             messages.success(request, _("Отправлено."))
         return redirect("forum:dm_thread", thread_id=thread.id)
 
-    msgs = thread.messages.select_related("sender").all()
+    thread_messages = thread.messages.select_related("sender").all()
     # Просмотр треда помечает «прочитано» на текущий момент
     part.last_read_at = timezone.now()
     part.save(update_fields=["last_read_at"])
     # Уведомления «ЛС» с ссылкой на этот тред — тоже прочитаны (как после клика по колокольчику)
     mark_pm_notifications_read_for_thread(request.user, thread.id)
-    return render(request, "forum/dm_thread.html", {"thread": thread, "messages": msgs})
+    return render(request, "forum/dm_thread.html", {"thread": thread, "thread_messages": thread_messages})
 
 
 @login_required

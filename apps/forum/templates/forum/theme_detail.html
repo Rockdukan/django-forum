@@ -170,14 +170,21 @@
                     </div>
 
                     {% if post.attachments.all %}
-                    <div class="post-attachments" style="margin-top:0.5rem;">
-                        <strong>Вложения:</strong>
-                        <ul>
+                    <section class="post-attachments" aria-label="Вложения">
+                        <div class="post-attachments__title">
+                            <i class="fas fa-paperclip" aria-hidden="true"></i>
+                            <span>Вложения</span>
+                        </div>
+                        <ul class="post-attachments__list">
                             {% for a in post.attachments.all %}
-                            <li><a href="{{ a.file.url }}" download="{{ a.original_name }}">{{ a.original_name }}</a></li>
+                            <li class="post-attachments__item">
+                                <a class="post-attachments__link" href="{{ a.file.url }}" download="{{ a.original_name }}" title="{{ a.original_name }}">
+                                    {{ a.original_name }}
+                                </a>
+                            </li>
                             {% endfor %}
                         </ul>
-                    </div>
+                    </section>
                     {% endif %}
 
                     {% if post.updated_at > post.created_at %}
@@ -202,14 +209,14 @@
                                 {% endif %}
                             {% endif %}
                         </div>
-                        <div class="post-likes">
+                        <div class="post-likes" aria-label="Лайки">
                             {% if user.is_authenticated %}
-                                <a href="javascript:void(0);" class="like-button" data-post-id="{{ post.id }}" onclick="likePost({{ post.id }})">
+                                <a href="javascript:void(0);" class="like-button" data-post-id="{{ post.id }}" onclick="likePost({{ post.id }})" aria-label="Поставить лайк">
                                     <i class="fas fa-thumbs-up {% if user in post.liked_by.all %}liked{% endif %}"></i>
                                 </a>
                             {% endif %}
                             <div class="like-count" id="like-count-{{ post.id }}">
-                                <i class="fas fa-thumbs-up"></i> {{ post.liked_by.count }}
+                                {{ post.liked_by.count }}
                             </div>
                         </div>
                     </div>
@@ -328,7 +335,7 @@
         .then(data => {
             if (data.status === 'success') {
                 const el = document.querySelector(`#like-count-${postId}`);
-                if (el) el.innerHTML = '<i class="fas fa-thumbs-up"></i> ' + data.likeCount;
+                if (el) el.textContent = String(data.likeCount);
                 const likeButton = document.querySelector(`.like-button[data-post-id="${postId}"] i`);
                 if (likeButton) {
                     if (data.liked) likeButton.classList.add('liked');

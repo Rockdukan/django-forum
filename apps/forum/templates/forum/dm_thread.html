@@ -7,7 +7,7 @@
     <a href="{% url 'forum:dm_inbox' %}" class="dm-back-link"><i class="fas fa-arrow-left" aria-hidden="true"></i> Все сообщения</a>
   </div>
   <div class="dm-messages">
-    {% for m in messages %}
+    {% for m in thread_messages %}
     <article class="dm-message">
       <header class="dm-message-header">
         <span class="dm-message-author">{{ m.sender.username }}</span>
