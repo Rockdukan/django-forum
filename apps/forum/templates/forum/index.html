@@ -25,8 +25,8 @@
 
         <div class="home-sections-list">
             {% for category in categories %}
-                <div class="home-section-item" style="display:block;">
-                <a href="{{ category.get_absolute_url }}" style="text-decoration:none;color:inherit;">
+                <div class="home-section-item">
+                <a href="{{ category.get_absolute_url }}" class="home-section-item__link">
                     <h3 class="home-section-title">{{ category.name }}</h3>
 
                     <div class="home-section-stats">

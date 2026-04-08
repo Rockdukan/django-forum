@@ -345,6 +345,14 @@ class IgnoredUsersManageForm(forms.ModelForm):
         model = User
         fields = ["ignored_users"]
         labels = {"ignored_users": _("Не показывать темы и сообщения этих пользователей")}
+        widgets = {
+            "ignored_users": forms.SelectMultiple(
+                attrs={
+                    "class": "forum-select-multiple",
+                    "size": "10",
+                }
+            ),
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

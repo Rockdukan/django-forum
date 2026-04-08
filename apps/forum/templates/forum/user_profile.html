@@ -27,13 +27,27 @@
             {% if profile_user.avatar %}
                 <img src="{{ profile_user.avatar.url }}" alt="{{ profile_user.username }}" class="avatar-img">
             {% else %}
-                <div class="avatar-default">{{ profile_user.username|first }}</div>
+                <div class="avatar-default"><span class="avatar-default__letter">{{ profile_user.username|first }}</span></div>
             {% endif %}
         </div>
 
         <div class="user-info-block">
-            <h1 class="user-profile-name">{{ profile_user.username }}</h1>
+            <div class="profile-name-row">
+                <h1 class="user-profile-name">{{ profile_user.username }}</h1>
+                {% if profile_user|online_status %}
+                    <span class="online-badge online-badge--pill">Онлайн</span>
+                {% else %}
+                    <span class="profile-last-seen">Был(а) {{ profile_user.last_activity|friendly_date }}</span>
+                {% endif %}
+            </div>
             <div class="user-role {{ profile_user.role }}">{{ profile_user|get_user_role_display }}</div>
+
+            {% if user.is_authenticated and user.id == profile_user.id and profile_user.email %}
+            <div class="profile-email-block">
+                <span class="profile-email-label">Email</span>
+                <span class="profile-email-value">{{ profile_user.email }}</span>
+            </div>
+            {% endif %}
 
             <div class="user-stats user-stats--compact">
                 <div class="stat-item">
@@ -48,23 +62,9 @@
                     <span class="stat-value">{{ profile_user.karma }}</span>
                     <span class="stat-label">реп.</span>
                 </div>
-                <div class="stat-item stat-item--wide">
-                    <span class="stat-value stat-value--wrap">{{ profile_user.email }}</span>
-                    <span class="stat-label">email</span>
-                </div>
                 <div class="stat-item">
                     <span class="stat-value">{{ profile_user.date_joined|date:"d.m.Y" }}</span>
                     <span class="stat-label">регистр.</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-value">
-                        {% if profile_user|online_status %}
-                            <span class="online-badge">Онлайн</span>
-                        {% else %}
-                            {{ profile_user.last_activity|friendly_date }}
-                        {% endif %}
-                    </span>
-                    <span class="stat-label">активн.</span>
                 </div>
             </div>
 

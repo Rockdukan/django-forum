@@ -7,25 +7,38 @@
     <ul class="breadcrumb-list">
         <li class="breadcrumb-item">
             <a href="{% url 'forum:index' %}" class="breadcrumb-link">Главная</a>
-            <span class="breadcrumb-divider"><i class="fas fa-angle-right"></i></span>
+            <span class="breadcrumb-divider" aria-hidden="true"><i class="fas fa-angle-right"></i></span>
         </li>
         <li class="breadcrumb-item">
-            <span class="breadcrumb-current">Игнор-лист</span>
+            <span class="breadcrumb-current" aria-current="page">Игнор-лист</span>
         </li>
     </ul>
 </div>
 
-<div class="edit-profile-container topic-detail-container">
-    <h1 class="category-title">Игнор-лист</h1>
-    <p class="form-help">Темы и сообщения выбранных пользователей не показываются в списках, поиске и в темах; личные сообщения недоступны.</p>
-    <form method="post" action="">
+<div class="static-page-box ignore-manage-page">
+    <h1 class="container-title ignore-manage-page__title">
+        <i class="fas fa-user-slash" aria-hidden="true"></i> Игнор-лист
+    </h1>
+    <p class="ignore-manage-lead">
+        Темы и сообщения выбранных пользователей скрываются в списках, поиске и внутри тем; личные сообщения с ними недоступны.
+    </p>
+
+    <form method="post" action="" class="ignore-manage-form">
         {% csrf_token %}
-        <div class="form-group">
+        <div class="ignore-manage-field">
+            <label for="{{ form.ignored_users.id_for_label }}" class="ignore-manage-label">{{ form.ignored_users.label }}</label>
             {{ form.ignored_users }}
             {{ form.ignored_users.errors }}
+            <p class="form-help ignore-manage-hint">Удерживайте Ctrl (Cmd на Mac), чтобы выбрать несколько имён.</p>
         </div>
-        <button type="submit" class="topic-button">Сохранить</button>
-        <a href="{% url 'forum:user_profile' username=user.username %}" class="cancel-button">Назад в профиль</a>
+        <div class="ignore-manage-actions">
+            <button type="submit" class="topic-button">
+                <i class="fas fa-save" aria-hidden="true"></i> Сохранить
+            </button>
+            <a href="{% url 'forum:user_profile' username=user.username %}" class="edit-profile-btn ignore-manage-back">
+                <i class="fas fa-arrow-left" aria-hidden="true"></i> Назад в профиль
+            </a>
+        </div>
     </form>
 </div>
 {% endblock %}

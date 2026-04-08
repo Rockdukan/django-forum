@@ -8,40 +8,55 @@
     <ul class="breadcrumb-list">
         <li class="breadcrumb-item">
             <a href="{% url 'forum:index' %}" class="breadcrumb-link">Главная</a>
-            <span class="breadcrumb-divider"><i class="fas fa-angle-right"></i></span>
+            <span class="breadcrumb-divider" aria-hidden="true"><i class="fas fa-angle-right"></i></span>
         </li>
         <li class="breadcrumb-item">
-            <span class="breadcrumb-current">Закладки</span>
+            <span class="breadcrumb-current" aria-current="page">Закладки</span>
         </li>
     </ul>
 </div>
 
-<div class="topic-detail-container forum-list-page">
-    <h1 class="category-title">Мои закладки</h1>
-    <div class="topic-list">
-        {% for bm in page_obj %}
-        <div class="topic-item">
-            <div class="topic-main">
-                <a href="{{ bm.topic.get_absolute_url }}" class="topic-title-link">{{ bm.topic.title }}</a>
-                <div class="topic-meta">
-                    <span>{{ bm.topic.category.name }}</span>
-                    <span>{{ bm.created_at|friendly_date }}</span>
-                </div>
-            </div>
-        </div>
-        {% empty %}
-        <p>Закладок пока нет.</p>
-        {% endfor %}
+<div class="topic-detail-container forum-list-page bookmarks-page">
+    <div class="forum-list-page__header bookmarks-page__header">
+        <h1 class="forum-list-page__title bookmarks-page__title">
+            <i class="fas fa-bookmark" aria-hidden="true"></i> Мои закладки
+        </h1>
     </div>
+
+    {% for bm in page_obj %}
+        {% if forloop.first %}
+        <div class="bookmarks-list" role="list">
+        {% endif %}
+            <a href="{{ bm.topic.get_absolute_url }}" class="bookmark-card" role="listitem">
+                <div class="bookmark-card__main">
+                    <span class="bookmark-card__title">{{ bm.topic.title }}</span>
+                    <div class="bookmark-card__meta">
+                        <span class="bookmark-card__cat">{{ bm.topic.category.name }}</span>
+                        <span class="bookmark-card__sep" aria-hidden="true">·</span>
+                        <time class="bookmark-card__time" datetime="{{ bm.created_at|date:'c' }}">Добавлено {{ bm.created_at|friendly_date }}</time>
+                    </div>
+                </div>
+                <span class="bookmark-card__chevron" aria-hidden="true"><i class="fas fa-angle-right"></i></span>
+            </a>
+        {% if forloop.last %}
+        </div>
+        {% endif %}
+    {% empty %}
+        <div class="forum-empty-state bookmarks-empty">
+            <i class="fas fa-bookmark empty-icon" aria-hidden="true"></i>
+            <p>Закладок пока нет. Откройте тему и нажмите «В закладки», чтобы сохранить её сюда.</p>
+        </div>
+    {% endfor %}
+
     {% if page_obj.paginator.num_pages > 1 %}
-    <div class="pagination-container">
+    <div class="pagination-container bookmarks-pagination">
         <div class="pagination">
             {% if page_obj.has_previous %}
-            <a href="?page={{ page_obj.previous_page_number }}" class="pagination-item"><i class="fas fa-angle-left"></i></a>
+            <a href="?page={{ page_obj.previous_page_number }}" class="pagination-item pagination-link" aria-label="Предыдущая страница"><i class="fas fa-angle-left"></i></a>
             {% endif %}
-            <span class="pagination-item active">{{ page_obj.number }}</span>
+            <span class="pagination-item active">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
             {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}" class="pagination-item"><i class="fas fa-angle-right"></i></a>
+            <a href="?page={{ page_obj.next_page_number }}" class="pagination-item pagination-link" aria-label="Следующая страница"><i class="fas fa-angle-right"></i></a>
             {% endif %}
         </div>
     </div>
